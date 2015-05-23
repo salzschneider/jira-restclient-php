@@ -1,4 +1,4 @@
-JiraReslib-Alpha
+JiraRestlib-Alpha
 ================
 
 It will be a Atlassian JIRA Rest API client library in PHP. You will be able to communicate with your JIRA easly using this library.
