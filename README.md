@@ -22,6 +22,7 @@ Missing features
 - httpClientCurl doesn't work yet - it will be a backup solution if you have [Guzzle](https://github.com/guzzle/guzzle) conflict or don't wanna use that package
 - lots of unit tests
 - documentation and examples
+- oAuth2 
 
 Requirements
 ----------------
