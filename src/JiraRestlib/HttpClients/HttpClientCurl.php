@@ -1,6 +1,6 @@
 <?php
 namespace JiraRestlib\HttpClients;
-use JiraRestlib\HttpClients\Source\CurlSource;
+use JiraRestlib\HttpClients\Client\CurlClient;
 use JiraRestlib\HttpClients\HttpClientException;
 use JiraRestlib\HttpClients\HttpClientAbstract;
 
@@ -25,25 +25,19 @@ class HttpClientCurl extends HttpClientAbstract
     protected $curlErrorCode = 0;
 
     /**
-     * The raw response from the server
-     * 
-     * @var string|boolean 
-     */
-    protected $rawResponse;
-
-    /**
      * Procedural curl as object
      * 
-     * @var CurlSource 
+     * @var CurlClient 
      */
-    protected $curlSource;
+    protected $curlClient;
 
     /**
      * Constructor
      */
     public function __construct(array $defaultOptions = array())
     {
-        $this->curlSource = new CurlSource();
+        $this->curlClient     = new CurlClient();
+        $this->defaultOptions = $defaultOptions;
     }
 
     /**
@@ -72,13 +66,16 @@ class HttpClientCurl extends HttpClientAbstract
         return $this->rawResponse;
     }
 
-    /**
-     * Opens a new curl connection
-     * @todo configbol a ssl verify
+     /**
+     * Sends a request to the server
      *
      * @param string $url The endpoint to send the request to
      * @param string $method The request method
      * @param array  $options The key value pairs to be sent in the body
+     *
+     * @return string Raw response from the server in JSON Format
+     *
+     * @throws \JiraRestlib\HttpClients\HttpClientException
      */
     public function openConnection($url, $method = 'GET', array $options = array())
     {
@@ -91,6 +88,7 @@ class HttpClientCurl extends HttpClientAbstract
             CURLOPT_SSL_VERIFYHOST => 0,
             CURLOPT_SSL_VERIFYPEER => false
         );
+        
         if ($method !== 'GET')
         {
             $curlOptions[CURLOPT_POSTFIELDS] = !$this->paramsHaveFile($options) ? http_build_query($options, null, '&') : $options;
@@ -100,8 +98,8 @@ class HttpClientCurl extends HttpClientAbstract
             $curlOptions[CURLOPT_CUSTOMREQUEST] = $method;
         }
 
-        $this->curlSource->init();
-        $this->curlSource->setOptArray($curlOptions);
+        $this->curlClient->init();
+        $this->curlClient->setOptArray($curlOptions);
     }
 
     /**
@@ -109,7 +107,7 @@ class HttpClientCurl extends HttpClientAbstract
      */
     public function closeConnection()
     {
-        $this->curlSource->close();
+        $this->curlClient->close();
     }
 
     /**
@@ -120,9 +118,9 @@ class HttpClientCurl extends HttpClientAbstract
     public function tryToSendRequest()
     {
         $this->sendRequest();
-        $this->curlErrorMessage       = $this->curlSource->getErrorNumber();
-        $this->curlErrorCode          = $this->curlSource->getErrorNumber();
-        $this->responseHttpStatusCode = $this->curlSource->getInfo(CURLINFO_HTTP_CODE);
+        $this->curlErrorMessage       = $this->curlClient->getErrorNumber();
+        $this->curlErrorCode          = $this->curlClient->getErrorNumber();
+        $this->responseHttpStatusCode = $this->curlClient->getInfo(CURLINFO_HTTP_CODE);
     }
 
     /**
@@ -132,7 +130,7 @@ class HttpClientCurl extends HttpClientAbstract
      */
     public function sendRequest()
     {
-        $this->rawResponse = $this->curlSource->exec();
+        $this->rawResponse = $this->curlClient->exec();
     }
 
     /**

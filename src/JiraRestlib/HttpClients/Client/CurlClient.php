@@ -1,47 +1,55 @@
 <?php
 
-namespace JiraRestlib\HttpClients\Source;
+namespace JiraRestlib\HttpClients\Client;
 
 /**
  * @package JiraRestlib
  */
-class CurlSource
+class CurlClient
 {
     /**
-     * @var resource Curl resource instance
+     * Curl client instance
+     * 
+     * @var resource 
      */
-    protected $_curl = null;
+    protected $curl = null;
 
     /**
      * Make a new curl reference instance
+     * 
+     * @return void
      */
     public function init()
     {
-        if ($this->_curl === null)
+        if ($this->curl === null)
         {
-            $this->_curl = curl_init();
+            $this->curl = curl_init();
         }
     }
 
     /**
      * Set a curl option
      *
-     * @param $key
-     * @param $value
+     * @param $key Curl option key
+     * @param $value Curl value to be set on option
+     * 
+     * @return void
      */
     public function setOpt($key, $value)
     {
-        curl_setopt($this->_curl, $key, $value);
+        curl_setopt($this->curl, $key, $value);
     }
 
     /**
      * Set an array of options to a curl resource
      *
      * @param array $options
+     * 
+     * @return void
      */
     public function setOptArray(array $options)
     {
-        curl_setopt_array($this->_curl, $options);
+        curl_setopt_array($this->curl, $options);
     }
 
     /**
@@ -51,7 +59,7 @@ class CurlSource
      */
     public function exec()
     {
-        return curl_exec($this->_curl);
+        return curl_exec($this->curl);
     }
 
     /**
@@ -61,7 +69,7 @@ class CurlSource
      */
     public function getErrorNumber()
     {
-        return curl_errno($this->_curl);
+        return curl_errno($this->curl);
     }
 
     /**
@@ -71,7 +79,7 @@ class CurlSource
      */
     public function getError()
     {
-        return curl_error($this->_curl);
+        return curl_error($this->curl);
     }
 
     /**
@@ -83,7 +91,7 @@ class CurlSource
      */
     public function getInfo($type)
     {
-        return curl_getinfo($this->_curl, $type);
+        return curl_getinfo($this->curl, $type);
     }
 
     /**
@@ -101,7 +109,7 @@ class CurlSource
      */
     public function close()
     {
-        curl_close($this->_curl);
+        curl_close($this->curl);
 
         // closed handle has to be initialized again
         $this->curl = null;

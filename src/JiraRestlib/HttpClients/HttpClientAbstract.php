@@ -7,7 +7,14 @@ namespace JiraRestlib\HttpClients;
  */
 abstract class HttpClientAbstract
 {
-     /**
+    /**
+     * Default options of the HttpClien object
+     * 
+     * @var array 
+     */
+    protected $defaultOptions = array();
+
+    /**
      * The headers received from the response
      * 
      * @var array 
@@ -35,8 +42,16 @@ abstract class HttpClientAbstract
      */
     protected $rawResponse;
     
-    /**
-     * 
+     /**
+     * Sends a request to the server
+     *
+     * @param string $url The endpoint to send the request to
+     * @param string $method The request method
+     * @param array  $options The key value pairs to be sent in the body
+     *
+     * @return string Raw response from the server in JSON Format
+     *
+     * @throws \JiraRestlib\HttpClients\HttpClientException
      */
     abstract public function send($url, $method = 'GET', $options = array());
     
@@ -51,30 +66,7 @@ abstract class HttpClientAbstract
         $this->responseHeaders        = null;
         $this->responseBody           = null;
         $this->rawResponse            = null;
-    }
-    
-    /**
-     * Get default options used at creating Guzzle Client object
-     * 
-     * @return array
-     */
-    public function getDefaultOptions()
-    {
-        return $this->guzzleClient->getDefaultOption();
-    }
-
-    /**
-     * Set default option of Guzzle object. It will rewrite the previous default options in case of same key name
-     * 
-     * @param string $keyOrPath Path to set
-     * @param mixed  $value Value to set at the key
-     * 
-     * @return void 
-     */
-    public function setDefaultOptions($keyOrPath, $value)
-    {
-        $this->guzzleClient->setDefaultOption($keyOrPath, $value);
-    }
+    }    
 
     /**
      * The headers returned in the response
@@ -114,6 +106,29 @@ abstract class HttpClientAbstract
     public function getRawResponse()
     {
         return $this->rawResponse;
+    }
+    
+     /**
+     * Get default options used at creating HttpClient object
+     * 
+     * @return array
+     */
+    public function getDefaultOptions()
+    {
+        return $this->defaultOptions;
+    }
+
+    /**
+     * Set default option. It will rewrite the previous default options in case of same key name
+     * 
+     * @param string $keyOrPath Path to set
+     * @param mixed  $value Value to set at the key
+     * 
+     * @return void 
+     */
+    public function setDefaultOptions($keyOrPath, $value)
+    {
+        $this->defaultOptions[$keyOrPath] = $value;
     }
     
     /**

@@ -7,6 +7,7 @@ use JiraRestlib\HttpClients\HttpClientAbstract;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\AdapterException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Post\PostFile;
 
 class HttpClientGuzzle extends HttpClientAbstract
 {
@@ -44,8 +45,25 @@ class HttpClientGuzzle extends HttpClientAbstract
      */
     public function send($url, $method = 'GET', $options = array())
     {
+        if(array_key_exists("files", $options))
+        {
+            $files = $options['files'];
+            unset($options['files']);
+        }
+        
         //the options will be automatically merged with defaultOptions
         $request = $this->guzzleClient->createRequest($method, $url, $options);
+        
+        if(!empty($files))
+        {
+            $request->addHeader('X-Atlassian-Token', 'nocheck');
+            $postBody = $request->getBody();
+
+            foreach($files as $file)
+            {
+               $postBody->addFile(new PostFile('file', fopen($file, 'r')));
+            }
+        }
 
         try
         {
@@ -104,6 +122,5 @@ class HttpClientGuzzle extends HttpClientAbstract
     public function getResponseJsonBody()
     {
         return (string)$this->getResponseBody();
-    } 
-
+    }    
 }

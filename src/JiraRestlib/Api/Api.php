@@ -20,7 +20,7 @@ class Api
     protected $config;
 
     /**
-     * Httpclient to connent JIRA API
+     * Httpclient to connect to JIRA API
      * 
      * @var HttpClientInterface
      */
@@ -127,4 +127,4 @@ class Api
         
         return $result;
     }
-    }
+}

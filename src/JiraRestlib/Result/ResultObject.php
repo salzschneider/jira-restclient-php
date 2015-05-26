@@ -2,6 +2,7 @@
 
 namespace JiraRestlib\Result;
 use JiraRestlib\Result\ResultAbstract;
+use JiraRestlib\Result\ResultException;
 use JiraRestlib\HttpClients\HttpClientAbstract;
 
 
@@ -17,9 +18,17 @@ class ResultObject extends ResultAbstract
     {
         parent::__construct($httpClient);
         
-        $config = array("object" => true);     
-        $this->response = $httpClient->getRawResponse()->json($config);      
-        $this->format   = parent::RESPONSE_FORMAT_OBJECT;
+        $config = array("object" => true); 
+        
+        try
+        {
+            $this->response = $httpClient->getRawResponse()->json($config); 
+            $this->format = parent::RESPONSE_FORMAT_OBJECT;
+        }
+        catch(\GuzzleHttp\Exception\ParseException $e)
+        {
+            throw new ResultException((string)$httpClient->getResponseBody());
+        }
     }
     
     /**

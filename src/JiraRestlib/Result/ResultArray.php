@@ -17,8 +17,15 @@ class ResultArray extends ResultAbstract
     {
         parent::__construct($httpClient);
         
-        $this->response = $httpClient->getRawResponse()->json();
-        $this->format   = parent::RESPONSE_FORMAT_ARRAY;
+        try
+        {
+            $this->response = $httpClient->getRawResponse()->json();
+            $this->format   = parent::RESPONSE_FORMAT_ARRAY;
+        }
+        catch(\GuzzleHttp\Exception\ParseException $e)
+        {
+            throw new ResultException((string)$httpClient->getResponseBody());
+        }
     }        
     
     /**

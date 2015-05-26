@@ -8,7 +8,7 @@ class Issue extends ResourcesAbstract
      * Returns a full representation of the issue for the given issue key.
      * 
      * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
-     * @param array $fields The list of fields to return for the issue. By default, all fields are returne
+     * @param array $fields The list of fields to return for the issue. By default, all fields are return
      * @param array $expand The list of fields to expand the result for more data
      * 
      * @return void
@@ -36,7 +36,7 @@ class Issue extends ResourcesAbstract
      *                         "description" => "some description here"));
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e2786 Dokument   
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e2786
      */
     public function createIssue($issue)
     {        
