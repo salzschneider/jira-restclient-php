@@ -152,4 +152,14 @@ class HttpClientCurl extends HttpClientAbstract
         }
         return false;
     }
+    
+    /**
+     * The body returned in the response in JSON format
+     * 
+     * @return string 
+     */
+    public function getResponseJsonBody()
+    {
+        return $this->rawResponse;
+    }
 }

@@ -17,9 +17,7 @@ class ResultObject extends ResultAbstract
     {
         parent::__construct($httpClient);
         
-        $config = array("object"          => true,
-                        "big_int_strings" => true);
-        
+        $config = array("object" => true);     
         $this->response = $httpClient->getRawResponse()->json($config);      
         $this->format   = parent::RESPONSE_FORMAT_OBJECT;
     }

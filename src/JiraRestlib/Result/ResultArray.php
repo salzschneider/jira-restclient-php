@@ -16,9 +16,8 @@ class ResultArray extends ResultAbstract
     public function __construct(HttpClientAbstract $httpClient)
     {
         parent::__construct($httpClient);
-        $config = array("big_int_strings" => true);
         
-        $this->response = $httpClient->getRawResponse()->json($config);         
+        $this->response = $httpClient->getRawResponse()->json();
         $this->format   = parent::RESPONSE_FORMAT_ARRAY;
     }        
     
