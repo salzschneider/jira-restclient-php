@@ -1,4 +1,4 @@
-JiraRestlib-Alpha
+Jira-RestClient-PHP (Alpha version)
 ================
 
 It will be a Atlassian JIRA Rest API client library in PHP. You will be able to communicate with your JIRA easly using this library.
@@ -20,7 +20,7 @@ Missing features
 ----------------
 - all JIRA API function implementations - issue, project, comment etc.
 - httpClientCurl doesn't work yet - it will be a backup solution if you have [Guzzle](https://github.com/guzzle/guzzle) conflict or don't wanna use that package
-- lots of unit tests
+- lots of unit and automated JIRA API tests (in travis)
 - documentation and examples
 - oAuth2 
 
@@ -28,4 +28,4 @@ Requirements
 ----------------
 - PHP 5 >= 5.4.0
 - cURL - it will be optional
-- [Guzzle](https://github.com/guzzle/guzzle)
+- [Guzzle](https://github.com/guzzle/guzzle) - v5
