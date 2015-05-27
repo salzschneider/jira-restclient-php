@@ -21,9 +21,8 @@ $attachmentResource = new Attachments();
 $issueKey = "JIR-5";
 
 //valid filenames with path
-$files = array("/path/to/file1",
-               "/path/to/file2",
-               "/path/to/file3");
+$files = array("files/jira.jpg",
+               "files/a.pdf",);
 
 $attachmentResource->addAttachment($issueKey, $files);
 

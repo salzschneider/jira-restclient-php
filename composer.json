@@ -1,7 +1,7 @@
 {
     "name": "salzschneider/jira-restclient-php",
     "description": "JIRA API rest client library written in PHP.",
-    "keywords": ["JIRA", "api", "PHP", "library", "rest"],
+    "keywords": ["JIRA", "API", "PHP", "library", "REST", "client"],
     "license": "MIT",
     "type":"library",
     "authors": [
@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "guzzlehttp/guzzle": "~4.0",
+        "guzzlehttp/guzzle": "~5.0",
         "ext-curl": "*"
     },
     "require-dev": {
