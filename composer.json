@@ -1,5 +1,5 @@
 {
-    "name": "salzschneider/jira-restlib-php",
+    "name": "salzschneider/jira-restclient-php",
     "description": "JIRA API rest client library written in PHP.",
     "keywords": ["JIRA", "api", "PHP", "library", "rest"],
     "license": "MIT",
