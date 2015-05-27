@@ -28,4 +28,21 @@ class ApiIssueTest extends ApiBaseTest
         
         $this->assertFalse($result->hasError()); 
     }
+    
+     public function testGetIssue2True()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => false);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);
+
+        $api = new Api($config);
+        $issueResource = new Issue();
+        $issueResource->getIssue('JIR-3', array("updated", "status"), array("name", "schema"));
+
+        $result = $api->getRequestResult($issueResource);
+        
+        $this->assertFalse($result->hasError()); 
+    }
 }
