@@ -15,7 +15,4 @@ sudo: false
 
 install: travis_retry composer install --no-interaction --prefer-source
 
-before_script:
-  - phpenv config-add travis.ini
-
 script: vendor/bin/phpunit --coverage-text
