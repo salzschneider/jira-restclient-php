@@ -1,6 +1,7 @@
 <?php
+namespace JiraRestlib\Tests;
 
-class ApiBaseTest extends PHPUnit_Framework_TestCase
+class ApiBaseTest extends \PHPUnit_Framework_TestCase
 {
     protected static $jiraRestHost;
     protected static $jiraRestUsername;

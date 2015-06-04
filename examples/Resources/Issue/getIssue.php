@@ -11,6 +11,7 @@ $defaultOption = array("query"     => array('testing' => '123'),
                        "verify"    => SSL_VERIFICATION);
 
 $config = new Config(JIRA_HOST);
+$config->addCommonConfig(Config::HTTPCLIENT, 'curl');
 $config->addRequestConfigArray($defaultOption);
 
 $api = new Api($config);

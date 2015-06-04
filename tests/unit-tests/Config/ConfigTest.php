@@ -2,6 +2,7 @@
 
 use Mockery as m;
 use JiraRestlib\Config\Config;
+use JiraRestlib\Tests\UnitBaseTest;
 
 class ConfigTest extends UnitBaseTest
 {

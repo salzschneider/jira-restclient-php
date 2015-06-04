@@ -19,7 +19,7 @@ class ResultArray extends ResultAbstract
         
         try
         {
-            $this->response = $httpClient->getRawResponse()->json();
+            $this->response = json_decode($httpClient->getResponseBody(), true);
             $this->format   = parent::RESPONSE_FORMAT_ARRAY;
         }
         catch(\GuzzleHttp\Exception\ParseException $e)

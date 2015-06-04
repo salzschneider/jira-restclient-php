@@ -1,11 +1,13 @@
 <?php
 namespace JiraRestlib\HttpClients;
 
+use JiraRestlib\HttpClients\HttpClientInterface;
+
 /**
  * Abstract parent of all HttpClient
  * @package JiraRestlib
  */
-abstract class HttpClientAbstract
+abstract class HttpClientAbstract implements HttpClientInterface
 {
     /**
      * Default options of the HttpClien object
@@ -40,20 +42,7 @@ abstract class HttpClientAbstract
      * 
      * @var mixed
      */
-    protected $rawResponse;
-    
-     /**
-     * Sends a request to the server
-     *
-     * @param string $url The endpoint to send the request to
-     * @param string $method The request method
-     * @param array  $options The key value pairs to be sent in the body
-     *
-     * @return string Raw response from the server in JSON Format
-     *
-     * @throws \JiraRestlib\HttpClients\HttpClientException
-     */
-    abstract public function send($url, $method = 'GET', $options = array());
+    protected $rawResponse;         
     
     /**
      * Set the all response variables to null, free memory
@@ -67,36 +56,6 @@ abstract class HttpClientAbstract
         $this->responseBody           = null;
         $this->rawResponse            = null;
     }    
-
-    /**
-     * The headers returned in the response
-     *
-     * @return array
-     */
-    public function getResponseHeaders()
-    {
-        return $this->responseHeaders;
-    }
-
-    /**
-     * The HTTP status response code
-     *
-     * @return int
-     */
-    public function getResponseHttpStatusCode()
-    {
-        return $this->responseHttpStatusCode;
-    }
-    
-    /**
-     * The body returned in the response
-     *
-     * @return mixed
-     */
-    public function getResponseBody()
-    {
-        return $this->responseBody;
-    }
 
     /**
      * The body returned in the response
@@ -130,11 +89,4 @@ abstract class HttpClientAbstract
     {
         $this->defaultOptions[$keyOrPath] = $value;
     }
-    
-    /**
-     * The body returned in the response in JSON format
-     * 
-     * @return string 
-     */
-    abstract public function getResponseJsonBody();
 }

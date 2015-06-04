@@ -25,10 +25,19 @@ print_r($newDef);
 $url = JIRA_HOST.'/rest/api/2/serverInfo';
 
 $result = $guzzleHttp->send($url, 'GET');
-
-echo ('response:').PHP_EOL;
 //convert to string (__toString() magic method)
 $resultJson = (string)$result;
+
+echo ('response:').PHP_EOL;
 print_r($resultJson);
 
+echo PHP_EOL;
+echo ('response headers:').PHP_EOL;
+print_r($guzzleHttp->getResponseHeaders());
+
+echo PHP_EOL;
+echo ('response http status code:');
+print_r($guzzleHttp->getResponseHttpStatusCode());
+
+echo PHP_EOL;
 echo "END";

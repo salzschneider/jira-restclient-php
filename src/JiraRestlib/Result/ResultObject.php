@@ -17,12 +17,10 @@ class ResultObject extends ResultAbstract
     public function __construct(HttpClientAbstract $httpClient)
     {
         parent::__construct($httpClient);
-        
-        $config = array("object" => true); 
-        
+
         try
         {
-            $this->response = $httpClient->getRawResponse()->json($config); 
+            $this->response = json_decode($httpClient->getResponseBody(), false); 
             $this->format = parent::RESPONSE_FORMAT_OBJECT;
         }
         catch(\GuzzleHttp\Exception\ParseException $e)

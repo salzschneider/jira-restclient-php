@@ -13,6 +13,7 @@
     "require": {
         "php": ">=5.4.0",
         "guzzlehttp/guzzle": "~5.0",
+        "php-curl-class/php-curl-class":" 3.5.5",
         "ext-curl": "*"
     },
     "require-dev": {
@@ -22,6 +23,11 @@
     "autoload": {
         "psr-4": {
             "JiraRestlib\\": "src/JiraRestlib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JiraRestlib\\Tests\\": "test/JiraRestlib/"
         }
     }
 }

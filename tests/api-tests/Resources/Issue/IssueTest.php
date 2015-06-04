@@ -3,6 +3,7 @@ use Mockery as m;
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Issue\Issue;
+use JiraRestlib\Tests\ApiBaseTest;
 
 class ApiIssueTest extends ApiBaseTest
 {

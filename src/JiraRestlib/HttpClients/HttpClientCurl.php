@@ -1,8 +1,8 @@
 <?php
 namespace JiraRestlib\HttpClients;
-use JiraRestlib\HttpClients\Client\CurlClient;
 use JiraRestlib\HttpClients\HttpClientException;
 use JiraRestlib\HttpClients\HttpClientAbstract;
+use Curl\Curl;
 
 /**
  * Class HttpClientCurl
@@ -27,7 +27,7 @@ class HttpClientCurl extends HttpClientAbstract
     /**
      * Procedural curl as object
      * 
-     * @var CurlClient 
+     * @var Curl\Curl 
      */
     protected $curlClient;
 
@@ -36,8 +36,8 @@ class HttpClientCurl extends HttpClientAbstract
      */
     public function __construct(array $defaultOptions = array())
     {
-        $this->curlClient     = new CurlClient();
         $this->defaultOptions = $defaultOptions;
+        $this->curlClient     = new Curl();        
     }
 
     /**
@@ -53,102 +53,115 @@ class HttpClientCurl extends HttpClientAbstract
      */
     public function send($url, $method = 'GET', $options = array())
     {
-        $this->openConnection($url, $method, $options);
-        $this->tryToSendRequest();
+        $this->setConnection($method, array_merge($this->defaultOptions, $options));
+        $this->sendRequest($url, $method);
         
         if ($this->curlErrorCode)
         {
             throw new HttpClientException($this->curlErrorMessage, $this->curlErrorCode);
         }
         
-        $this->closeConnection();
+        $this->curlClient->close();
         
         return $this->rawResponse;
     }
 
      /**
-     * Sends a request to the server
+     * Set the cURL parameters
      *
-     * @param string $url The endpoint to send the request to
      * @param string $method The request method
      * @param array  $options The key value pairs to be sent in the body
      *
-     * @return string Raw response from the server in JSON Format
-     *
-     * @throws \JiraRestlib\HttpClients\HttpClientException
+     * @return void
      */
-    public function openConnection($url, $method = 'GET', array $options = array())
-    {
-        $curlOptions = array(
-            CURLOPT_URL => $url,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 60,
-            CURLOPT_RETURNTRANSFER => true, 
-            CURLOPT_HEADER         => false, 
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => false
-        );
+    protected function setConnection($method = 'GET', array $options = array())
+    {        
+        $this->curlClient->setOpt(CURLOPT_CONNECTTIMEOUT, 10);
+        $this->curlClient->setOpt(CURLOPT_TIMEOUT, 60);
+        $this->curlClient->setOpt(CURLOPT_RETURNTRANSFER, true);
+        $this->curlClient->setOpt(CURLOPT_HEADER, false);
         
-        if ($method !== 'GET')
-        {
-            $curlOptions[CURLOPT_POSTFIELDS] = !$this->paramsHaveFile($options) ? http_build_query($options, null, '&') : $options;
-        }
-        if ($method === 'DELETE' || $method === 'PUT')
-        {
-            $curlOptions[CURLOPT_CUSTOMREQUEST] = $method;
-        }
-
-        $this->curlClient->init();
-        $this->curlClient->setOptArray($curlOptions);
+        $this->setAuth($options);
+        $this->setVerify($options);
     }
-
+    
     /**
-     * Closes an existing curl connection
-     */
-    public function closeConnection()
-    {
-        $this->curlClient->close();
-    }
-
-    /**
-     * Try to send the request
+     * Set basic auth if it exists in config
      * 
+     * @param array  $options The key value pairs to be sent in the body
      * @return void
      */
-    public function tryToSendRequest()
+    protected function setAuth(array $options)
     {
-        $this->sendRequest();
-        $this->curlErrorMessage       = $this->curlClient->getErrorNumber();
-        $this->curlErrorCode          = $this->curlClient->getErrorNumber();
-        $this->responseHttpStatusCode = $this->curlClient->getInfo(CURLINFO_HTTP_CODE);
+        if(!empty($options["auth"]) && is_array($options["auth"]))
+        {
+            $this->curlClient->setBasicAuthentication($options["auth"][0], $options["auth"][1]);
+        }
     }
-
-    /**
-     * Send the request and get the raw response from curl
+    
+     /**
+     * Set SSL verification if it exists in config
      * 
+     * @param array  $options The key value pairs to be sent in the body
      * @return void
      */
-    public function sendRequest()
-    {
-        $this->rawResponse = $this->curlClient->exec();
-    }
-
-    /**
-     * Detect if the params have a file to upload.
-     *
-     * @param array $params     
-     * @return boolean
-     */
-    private function paramsHaveFile(array $params)
-    {
-        foreach ($params as $value)
+    protected function setVerify(array $options)
+    {        
+        if ($options["verify"] === false)
         {
-            if ($value instanceof \CURLFile)
+            $this->curlClient->setOpt(CURLOPT_SSL_VERIFYHOST, 0);
+            $this->curlClient->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+        }
+        else
+        {
+            $this->curlClient->setOpt(CURLOPT_SSL_VERIFYHOST, 2);
+            $this->curlClient->setOpt(CURLOPT_SSL_VERIFYPEER, true);
+
+            if (is_string($options["verify"]))
             {
-                return true;
+                if (!file_exists($options["verify"]))
+                {
+                    throw new HttpClientException( "SSL CA bundle not found: ".$options["verify"]);
+                }
+                
+                $this->curlClient->setOpt(CURLOPT_CAINFO, $options["verify"]);                
             }
         }
-        return false;
+    }
+    
+     /**
+     * Send the request and get the raw response from curl
+     * 
+     * @param string $url The endpoint to send the request to
+     * @param string $method The request method
+     * @return void
+     */
+    protected function sendRequest($url, $method = 'GET')
+    {                
+        if ($method === 'GET')
+        {            
+            $this->curlClient->get($url);
+        }
+        
+        if ($method === 'DELETE' || $method === 'PUT')
+        {
+            
+        }
+        
+        if ($this->curlClient->error) 
+        {
+            $this->curlErrorMessage  = $this->curlClient->curl_error_message;
+            $this->curlErrorCode     = $this->curlClient->curl_error_code;
+        }
+        else 
+        {
+           $this->curlClient->response;
+        }
+        
+        //@todo has to be an array - guzzle
+        $this->responseHeaders        = $this->curlClient->response_headers; 
+        $this->responseHttpStatusCode = $this->curlClient->http_status_code;        
+        $this->rawResponse            = $this->curlClient->raw_response;
     }
     
     /**
@@ -159,5 +172,52 @@ class HttpClientCurl extends HttpClientAbstract
     public function getResponseJsonBody()
     {
         return $this->rawResponse;
+    }
+    
+    /**
+     * The body returned in the response
+     *
+     * @return mixed
+     */
+    public function getResponseBody()
+    {
+        return $this->rawResponse;
+    }
+    
+    /**
+     * The headers returned in the response
+     *
+     * @return array
+     */
+    public function getResponseHeaders()
+    {
+        $returnArray = array();
+        
+        foreach($this->responseHeaders as $key => $values)
+        {
+            if(is_array($values))
+            {
+                foreach($values as $value)
+                {
+                    $returnArray[$key][] = $value;
+                }
+            }
+            else
+            {
+                $returnArray[$key][] = $values;
+            }
+        }
+        
+        return $returnArray;
+    }
+        
+    /**
+     * The HTTP status response code
+     *
+     * @return int
+     */
+    public function getResponseHttpStatusCode()
+    {
+        return $this->responseHttpStatusCode;
     }
 }

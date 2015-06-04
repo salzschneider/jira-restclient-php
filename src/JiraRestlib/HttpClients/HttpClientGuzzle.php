@@ -25,11 +25,8 @@ class HttpClientGuzzle extends HttpClientAbstract
      */
     public function __construct(array $defaultOptions = array())
     {
-        if(is_null($this->guzzleClient))
-        {
-            $this->defaultOptions = $defaultOptions;
-            $this->guzzleClient = new Client(array("defaults" => $defaultOptions));
-        }
+        $this->defaultOptions = $defaultOptions;
+        $this->guzzleClient   = new Client(array("defaults" => $defaultOptions));
     }      
 
     /**
