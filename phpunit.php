@@ -22,5 +22,5 @@ date_default_timezone_set('UTC');
 |--------------------------------------------------------------------------
 |
 */
-require __DIR__.'/tests/api-tests/ApiBaseTest.php';
-require __DIR__.'/tests/unit-tests/UnitBaseTest.php';
+require __DIR__.'/tests/integration/ApiBaseTest.php';
+require __DIR__.'/tests/unit/UnitBaseTest.php';

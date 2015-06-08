@@ -49,7 +49,7 @@ class Config
      * 
      * @var array 
      */        
-    protected $configValidator = array('httpclient' => array("guzzle", "curl"));
+    protected static $configValidator = array(self::HTTPCLIENT => array("guzzle", "curl"));
     
     /**     
      * Setting minimum configuration values
@@ -177,7 +177,7 @@ class Config
     {
         if($index == self::HTTPCLIENT && !$this->isValidHttpClient($value))
         {
-            throw new \JiraRestlib\Config\ConfigException("Invalid httpclient: ".$value.". It can be: ". implode(", ", $this->configValidator[self::HTTPCLIENT]));
+            throw new \JiraRestlib\Config\ConfigException("Invalid httpclient: ".$value.". It can be: ". implode(", ", self::$configValidator[self::HTTPCLIENT]));
         }
         
         if($index == self::JIRA_HOST && !$this->isValidJiraBaseUrl($value))
@@ -199,7 +199,7 @@ class Config
     {       
         $isValid = false;
         
-        if(in_array($httpclient, $this->configValidator[self::HTTPCLIENT]))
+        if(in_array($httpclient, self::$configValidator[self::HTTPCLIENT]))
         {           
             $isValid = true;
         }
@@ -326,6 +326,16 @@ class Config
         }
 
         return $this;
+    }
+    
+    /**
+     * Get valid httpClient types e.g.: guzzle, curl
+     * 
+     * @return array
+     */
+    public static function getValidHttpClientTypes()
+    {
+        return self::$configValidator[self::HTTPCLIENT];
     }
 
 }
