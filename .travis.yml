@@ -19,4 +19,4 @@ sudo: false
 
 install: travis_retry composer install --no-interaction --prefer-source
 
-script: vendor/bin/phpunit-randomizer --coverage-text --testsuite $TEST_SUITE
+script: vendor/bin/phpunit-randomizer --coverage-text --order rand --testsuite $TEST_SUITE
