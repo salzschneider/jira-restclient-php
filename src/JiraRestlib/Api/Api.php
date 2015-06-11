@@ -72,7 +72,7 @@ class Api
      * 
      * @return void
      */
-    protected function reset()
+    public function reset()
     {  
         if($this->config->hasCommonIndex(Config::HTTPCLIENT) && $this->config->getCommonConfigByIndex(Config::HTTPCLIENT) == 'curl')
         {
@@ -88,7 +88,6 @@ class Api
      * Get the result of the request. The resource has to be set. 
      * 
      * @param ResourcesAbstract $resource 
-     * @param string $format Result format type: "array", "object"
      * @return JiraRestlib\Result\ResultAbstract
      */
     public function getRequestResult(ResourcesAbstract $resource)

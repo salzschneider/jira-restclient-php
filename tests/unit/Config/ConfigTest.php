@@ -116,9 +116,9 @@ class ConfigTest extends UnitBaseTest
      * @dataProvider invalidConstructor
      * @expectedException \JiraRestlib\Config\ConfigException
      */
-    public function testCreateConfigFalse()
+    public function testCreateConfigFalse($url, $httpClientType)
     {
-        $config = new Config(null);
+        $config = new Config($url, $httpClientType);
     }
     
     /**
