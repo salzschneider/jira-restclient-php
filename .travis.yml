@@ -7,9 +7,6 @@ php:
   - 7.0
   - hhvm
   
-env:
-  - TEST_SUITE=unit
-  - TEST_SUITE=integration
 
 matrix:
     allow_failures:
@@ -19,4 +16,4 @@ sudo: false
 
 install: travis_retry composer install --no-interaction --prefer-source
 
-script: vendor/bin/phpunit-randomizer --coverage-text --order rand --testsuite $TEST_SUITE
+script: vendor/bin/phpunit-randomizer --coverage-text --order rand 

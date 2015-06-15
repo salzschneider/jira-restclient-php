@@ -2,10 +2,10 @@
 use Mockery as m;
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
-use JiraRestlib\Resources\Issue\Issue;
+use JiraRestlib\Tests\WrongServerInfo;
 use JiraRestlib\Tests\IntegrationBaseTest;
 
-class ApiIssueTest extends IntegrationBaseTest
+class HttpClientGuzzleTest extends IntegrationBaseTest
 {
 
     public function tearDown()
@@ -13,7 +13,10 @@ class ApiIssueTest extends IntegrationBaseTest
         m::close();
     }   
     
-    public function testGetIssueTrue()
+    /**
+     * @expectedException \JiraRestlib\Result\ResultException
+     */
+    public function testGetServerInfoFalse()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
                                "verify"    => false);
@@ -22,28 +25,28 @@ class ApiIssueTest extends IntegrationBaseTest
         $config->addRequestConfigArray($defaultOption);
 
         $api = new Api($config);
-        $issueResource = new Issue();
-        $issueResource->getIssue(self::$foreverIssueId , array("updated", "status"), array("name", "schema"));
+        $serverInfResource = new WrongServerInfo();
+        $serverInfResource->getWrongServerInfo();  
 
-        $result = $api->getRequestResult($issueResource);
-        
-        $this->assertFalse($result->hasError()); 
+        $result = $api->getRequestResult($serverInfResource);
     }
     
-     public function testGetIssue2True()
+    /**
+     * @expectedException \JiraRestlib\HttpClients\HttpClientException
+     */
+    public function testGetServerInfoFalse2()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
                                "verify"    => false);
 
-        $config = new Config(self::$jiraRestHost);
+        $config = new Config("WRONG_URL");
         $config->addRequestConfigArray($defaultOption);
 
         $api = new Api($config);
-        $issueResource = new Issue();
-        $issueResource->getIssue(self::$foreverIssueId, array("updated", "status"), array("name", "schema"));
+        $serverInfResource = new WrongServerInfo();
+        $serverInfResource->getWrongServerInfo();  
 
-        $result = $api->getRequestResult($issueResource);
-        
-        $this->assertFalse($result->hasError()); 
+        $result = $api->getRequestResult($serverInfResource);
     }
+
 }

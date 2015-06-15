@@ -47,8 +47,8 @@ abstract class ResultAbstract
      * @return void
      */
     public function __construct(HttpClientAbstract $httpClient)
-    {
-        if($httpClient->getResponseHttpStatusCode() == 415)
+    {       
+        if($httpClient->getResponseHttpStatusCode() >= 300)
         {
             throw new ResultException($httpClient->getResponseBody());
         }

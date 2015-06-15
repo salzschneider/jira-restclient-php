@@ -4,9 +4,13 @@ use Mockery as m;
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Tests\UnitBaseTest;
+use JiraRestlib\Resources\Issue\Issue;
+use JiraRestlib\Resources\Attachments\Attachments;
 
 class ApiTest extends UnitBaseTest
 {    
+    const JIRA_URL = "http://jira.com";
+    
     public function tearDown()
     {
         m::close();
@@ -14,7 +18,7 @@ class ApiTest extends UnitBaseTest
     
     protected function getNewApi()
     {
-        $config = new Config("http://jira.com", "guzzle");
+        $config = new Config(self::JIRA_URL, "guzzle");
         return new Api($config);
     }
 
@@ -22,8 +26,8 @@ class ApiTest extends UnitBaseTest
     public function validConstructor()
     {
         return array(
-          array(new Config("http://jira.com", "guzzle")),
-          array(new Config("http://jira.com", "curl")),
+          array(new Config(self::JIRA_URL, "guzzle")),
+          array(new Config(self::JIRA_URL, "curl")),
         );
     }
     
@@ -35,7 +39,25 @@ class ApiTest extends UnitBaseTest
           array("WRONG"),  
           array(new stdClass()),
         );
-    }        
+    }  
+    
+    public function invalidResources()
+    {
+        return array(
+          array(null),
+          array(1),
+          array("WRONG"),  
+          array(new stdClass()),
+        );
+    } 
+    
+    public function notSetResources()
+    {
+        return array(
+          array(new Issue()),
+          array(new Attachments()),
+        );
+    }
     
     /**
      * @dataProvider validConstructor
@@ -62,6 +84,14 @@ class ApiTest extends UnitBaseTest
  
         $this->assertInstanceOf("\JiraRestlib\HttpClients\HttpClientAbstract", $httpClient);
     }
+    
+    public function testGetConfigTrue()
+    {
+        $api = $this->getNewApi();
+        $apiConfig = $api->getConfig();
+ 
+        $this->assertSame(self::JIRA_URL, $apiConfig->getCommonConfigByIndex(Config::JIRA_HOST));
+    }
         
     public function testSetConfigTrue()
     {
@@ -75,18 +105,28 @@ class ApiTest extends UnitBaseTest
     
         $this->assertNotSame($apiOldUrl, $apiUrl);
     }
-    
-    public function testResetTrue()
-    {
-        $config = new Config("http://jira.com", "guzzle");
-        $api = new Api($config);        
-        $httpClientFirst = $api->getHttpClient();
         
-        $config = new Config("http://jira.com", "curl");
+    /**
+     * @dataProvider invalidResources
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function testGetRequestResultFalse($resource)
+    {
+        $config = new Config(self::JIRA_URL, "guzzle");
         $api = new Api($config);        
-        $httpClientSecond = $api->getHttpClient();
-      
-        $this->assertNotSame(get_class($httpClientFirst), get_class($httpClientSecond));
+                
+        $api->getRequestResult($resource);
     }
-
+    
+    /**
+     * @dataProvider notSetResources
+     * @expectedException \JiraRestlib\Api\ApiException
+     */
+    public function testGetRequestResultFalse2($resource)
+    {
+        $config = new Config(self::JIRA_URL, "guzzle");
+        $api = new Api($config);  
+                
+        $api->getRequestResult($resource);
+    }
 }

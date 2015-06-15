@@ -25,8 +25,7 @@ class HttpClientGuzzle extends HttpClientAbstract
      */
     public function __construct(array $defaultOptions = array())
     {
-        $this->defaultOptions = $defaultOptions;
-        $this->guzzleClient   = new Client(array("defaults" => $defaultOptions));
+        $this->guzzleClient = new Client(array("defaults" => $defaultOptions));
     }      
 
     /**
@@ -67,13 +66,13 @@ class HttpClientGuzzle extends HttpClientAbstract
             $rawResponse = $this->guzzleClient->send($request);
         }
         catch(RequestException $e)
-        {
-            if($e->getPrevious() instanceof AdapterException)
+        {          
+            $rawResponse = $e->getResponse();
+            
+            if($e->getPrevious() instanceof AdapterException || is_null($rawResponse))
             {
                 throw new HttpClientException($e->getMessage(), $e->getCode());
-            }
-
-            $rawResponse = $e->getResponse();
+            }                
         }
 
         $this->rawResponse = $rawResponse;

@@ -66,13 +66,13 @@ class Api
     {
         return $this->httpClient;
     }
-
+    
     /**
      * Creating new httpclient by current Config object
      * 
      * @return void
      */
-    public function reset()
+    protected function reset()
     {  
         if($this->config->hasCommonIndex(Config::HTTPCLIENT) && $this->config->getCommonConfigByIndex(Config::HTTPCLIENT) == 'curl')
         {
@@ -83,6 +83,7 @@ class Api
             $this->httpClient = new \JiraRestlib\HttpClients\HttpClientGuzzle($this->config->getRequestConfig());
         }
     }
+        
     
     /**
      * Get the result of the request. The resource has to be set. 

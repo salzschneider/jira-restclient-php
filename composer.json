@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "JiraRestlib\\Tests\\": "test/JiraRestlib/"
+            "JiraRestlib\\Tests\\": "tests/lib/"
         }
     }
 }
