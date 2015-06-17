@@ -19,7 +19,7 @@ class GeneralApiTest extends IntegrationBaseTest
     public function testGetServerInfoTrue()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addCommonConfig(Config::RESPONSE_FORMAT, \JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_OBJECT);
@@ -37,7 +37,7 @@ class GeneralApiTest extends IntegrationBaseTest
     public function testGetServerInfo2True()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addCommonConfig(Config::RESPONSE_FORMAT, \JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_ARRAY);
@@ -55,7 +55,7 @@ class GeneralApiTest extends IntegrationBaseTest
     public function testGetServerInfo3True()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addRequestConfigArray($defaultOption);
@@ -75,7 +75,7 @@ class GeneralApiTest extends IntegrationBaseTest
     public function testGetServerInfoFalse()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addCommonConfig(Config::RESPONSE_FORMAT, "WRONG");

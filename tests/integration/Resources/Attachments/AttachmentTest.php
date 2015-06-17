@@ -16,7 +16,7 @@ class AttachmentTest extends IntegrationBaseTest
     public function testAddAttachmentTrue()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addRequestConfigArray($defaultOption);

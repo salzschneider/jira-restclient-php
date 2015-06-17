@@ -1,57 +1,53 @@
 <?php
 use Mockery as m;
-use JiraRestlib\Api\Api;
-use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Issue\Issue;
+use JiraRestlib\Config\Config;
 use JiraRestlib\Tests\IntegrationBaseTest;
+use JiraRestlib\Result\ResultAbstract;
+use JiraRestlib\Api\Api;
 
-class ApiIssueTest extends IntegrationBaseTest
+class ResultObjectTest extends IntegrationBaseTest
 {
 
     public function tearDown()
     {
         m::close();
     }   
-    
-    public function testGetIssueTrue()
+
+    public function testGetErrorTrue()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
                                "verify"    => self::$isVerified);
 
         $config = new Config(self::$jiraRestHost);
         $config->addRequestConfigArray($defaultOption);
-
+        $config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+        
         $api = new Api($config);
         $issueResource = new Issue();
-        $issueResource->getIssue(self::$foreverIssueId , array("updated", "status"), array("name", "schema"));
+        $issueResource->getIssue('WRONG', array("updated", "status"), array("name", "schema"));
 
         $result = $api->getRequestResult($issueResource);
-        
-        $this->assertFalse($result->hasError()); 
+        $errorMessages = $result->getErrorMessages();
+
+        $this->assertSame($errorMessages[0], 'Issue Does Not Exist'); 
     }
     
-    public function testGetIssue2True()
+    public function testGetErrorFalse()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => self::$isVerified);
+                               "verify"    => false);
 
         $config = new Config(self::$jiraRestHost);
         $config->addRequestConfigArray($defaultOption);
-        $config->addCommonConfig(Config::RESPONSE_FORMAT, \JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_ARRAY);
-
+        $config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+        
         $api = new Api($config);
-        $issueResource = new Issue();
-        $issueResource->getIssue(self::$foreverIssueId, array("updated", "status"), array("name", "schema"));
+        $issueResource = new \JiraRestlib\Tests\WrongServerInfo();
+        $issueResource->getWrongServerInfo();
 
         $result = $api->getRequestResult($issueResource);
-        $response = $result->getResponse();
-        
-        $this->assertSame(self::$foreverIssueId, $response['key']); 
-        $this->assertSame(\JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_ARRAY, $result->getFormat()); 
-
-        //header contains these indexes
-        $this->assertEmpty(array_diff(array('Date', 'Server', 'Cache-Control' ), array_keys($result->getResponseHeaders())));        
-        $this->assertFalse($result->hasError()); 
+        $this->assertTrue($result->hasError()); 
     }
     
     public function testCreateIssueTrue()
@@ -61,6 +57,8 @@ class ApiIssueTest extends IntegrationBaseTest
 
         $config = new Config(self::$jiraRestHost);
         $config->addRequestConfigArray($defaultOption);
+        $config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+        
 
         $api = new Api($config);
         $issueResource = new Issue();
@@ -77,4 +75,5 @@ class ApiIssueTest extends IntegrationBaseTest
         $errors = $result->getErrors();
         $this->assertContains("WRONG_ATTRIB", $errors['WRONG_ATTRIB']);                 
     }
+
 }

@@ -14,30 +14,12 @@ class HttpClientGuzzleTest extends IntegrationBaseTest
     }   
     
     /**
-     * @expectedException \JiraRestlib\Result\ResultException
-     */
-    public function testGetServerInfoFalse()
-    {
-        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
-
-        $config = new Config(self::$jiraRestHost);
-        $config->addRequestConfigArray($defaultOption);
-
-        $api = new Api($config);
-        $serverInfResource = new WrongServerInfo();
-        $serverInfResource->getWrongServerInfo();  
-
-        $result = $api->getRequestResult($serverInfResource);
-    }
-    
-    /**
      * @expectedException \JiraRestlib\HttpClients\HttpClientException
      */
     public function testGetServerInfoFalse2()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => false);
+                               "verify"    => self::$isVerified);
 
         $config = new Config("WRONG_URL");
         $config->addRequestConfigArray($defaultOption);
