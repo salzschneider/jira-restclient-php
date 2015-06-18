@@ -34,5 +34,29 @@ class AttachmentTest extends IntegrationBaseTest
 
         $this->assertFalse($result->hasError()); 
     }
+    
+    /**
+     * @expectedException \JiraRestlib\Resources\ResourcesException
+     */
+    public function testAddAttachmentFalse()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);
+
+        $api = new Api($config);
+        $attachmentResource = new Attachments();
+
+        //invalid filename set
+        $files = array();
+
+        $attachmentResource->addAttachment(self::$foreverIssueId, $files);
+
+        $result = $api->getRequestResult($attachmentResource);
+
+        $this->assertFalse($result->hasError()); 
+    }
 
 }

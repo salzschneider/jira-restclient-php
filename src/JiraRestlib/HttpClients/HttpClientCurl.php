@@ -134,7 +134,7 @@ class HttpClientCurl extends HttpClientAbstract
      * 
      * @param string $url The endpoint to send the request to
      * @param string $method The request method
-     * @return void
+     * @return string Raw response from the server in JSON Format
      */
     protected function sendRequest($url, $method = 'GET')
     {                
@@ -143,10 +143,10 @@ class HttpClientCurl extends HttpClientAbstract
             $this->curlClient->get($url);
         }
         
-        if ($method === 'DELETE' || $method === 'PUT')
+        /*if ($method === 'DELETE' || $method === 'PUT')
         {
             
-        }
+        }*/
         
         if ($this->curlClient->error) 
         {
@@ -162,6 +162,8 @@ class HttpClientCurl extends HttpClientAbstract
         $this->responseHeaders        = $this->curlClient->response_headers; 
         $this->responseHttpStatusCode = $this->curlClient->http_status_code;        
         $this->rawResponse            = $this->curlClient->raw_response;
+        
+        return $this->getResponseJsonBody();
     }
     
     /**
@@ -193,19 +195,9 @@ class HttpClientCurl extends HttpClientAbstract
     {
         $returnArray = array();
         
-        foreach($this->responseHeaders as $key => $values)
+        foreach($this->responseHeaders as $key => $value)
         {
-            if(is_array($values))
-            {
-                foreach($values as $value)
-                {
-                    $returnArray[$key][] = $value;
-                }
-            }
-            else
-            {
-                $returnArray[$key][] = $values;
-            }
+            $returnArray[$key][] = $value;
         }
         
         return $returnArray;
