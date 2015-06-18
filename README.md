@@ -1,5 +1,6 @@
-Jira-RestClient-PHP (Alpha version)
-================
+#Jira-RestClient-PHP (Alpha version)
+
+[![Build Status](https://travis-ci.org/salzschneider/jira-restclient-php.svg?branch=master)](https://travis-ci.org/salzschneider/jira-restclient-php)
 
 It will be an Atlassian JIRA Rest API client library for PHP. You will be able to communicate with your JIRA easly using this library.
 It's an alpha/prototype version, **please don't use it yet**. 
