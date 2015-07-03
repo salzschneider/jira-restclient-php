@@ -12,7 +12,7 @@ class Attachments extends ResourcesAbstract
      * @param array $files filenames with full path - multipart posts
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e484  
+     * https://docs.atlassian.com/jira/REST/latest/#d2e4287
      */
     public function addAttachment($idOrKey, $files)
     {        

@@ -21,7 +21,7 @@ class IntegrationBaseTest extends \PHPUnit_Framework_TestCase
         self::$jiraRestUsername = getenv("JIRA_REST_USERNAME");
         self::$jiraRestPassword = getenv("JIRA_REST_PASSWORD");
         self::$foreverIssueId   = getenv("FOREVER_ISSUE_ID"); 
-        
+     
         //need ssl verification
         self::$isVerified       = false;
     }
