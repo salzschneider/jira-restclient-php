@@ -120,7 +120,7 @@ class Issue extends ResourcesAbstract
     
         $expandQuery = $this->getQueryUri($parameters);
         
-        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/createmeta" . $expandQuery;              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/createmeta" . $expandQuery;   
         $this->method = "GET";
     }
     
@@ -336,4 +336,255 @@ class Issue extends ResourcesAbstract
         $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/editmeta/";        
         $this->method = "GET";
     }
+    
+    /**
+     * Get a list of the transitions possible for this issue by the current user, along with fields that are required and their types.
+     * The fields in the metadata correspond to the fields in the transition screen for that transition. 
+     * Fields not in the screen will not be in the metadata.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param boolean $isFields If true, all fields are returned
+     * @param integer $transitionId id of a specific available transition 
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e280
+     */
+    public function getAllTransitionIssue($idOrKey, $isFields = false, $transitionId = null)
+    {      
+        $parameters = array();
+        
+        if($isFields)
+        {
+            $parameters["expand"] = array("transitions.fields");
+        }
+        
+        if($transitionId)
+        {
+            $parameters["transitionId"] = array($transitionId);
+        }
+        
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/transitions".$expandQuery;        
+        $this->method = "GET";
+    }
+    
+    /**
+     * Perform a transition on an issue. When performing the transition you can udate or set other issue fields.
+     * If a field is not configured to appear on the transition screen, then it will not be in the transition metadata, 
+     * and a field validation error will occur if it is submitted.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param array $data Transition info: id, filed names, hitstory metadata etc. that we wanna update or set
+     * @param boolean $isFields If true, all fields are returned
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e280
+     */
+    public function performTransitionIssue($idOrKey, array $data, $isFields = false)
+    {      
+        $parameters = array();
+        
+        if(empty($data))
+        {
+            throw new ResourcesException("You have to set the data array. Please check the Jira API documentation.");
+        }
+        
+        if($isFields)
+        {
+            $parameters["expand"] = array("transitions.fields");
+        }
+        
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->setOptions(array("json" => $data));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/transitions".$expandQuery;            
+        $this->method = "POST";
+    }
+    
+    /**
+     * A REST sub-resource representing the voters on the issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
+     */
+    public function getVoteIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/votes";            
+        $this->method = "GET";
+    }
+    
+    /**
+     * Cast your vote in favour of an issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
+     */
+    public function voteIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/votes";            
+        $this->method = "POST";
+    }
+    
+    /**
+     * Remove your vote from an issue. (i.e. "unvote")
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
+     */
+    public function deleteVoteIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/votes";            
+        $this->method = "DELETE";
+    }
+
+    /**
+     * Returns the list of watchers for the issue with the given key.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
+     */
+    public function getWatchersIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/watchers";            
+        $this->method = "GET";
+    }
+    
+    /**
+     * Adds a user to an issue's watcher list.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
+     */
+    public function addWatcherIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/watchers";            
+        $this->method = "POST";
+    }
+    
+    /**
+     * Removes a user from an issue's watcher list.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $username containing the name of the user to remove from the watcher list. Must not be null.
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
+     */
+    public function removeWatcherIssue($idOrKey, $username)
+    {              
+        if(empty($username))
+        {
+            throw new ResourcesException("You must set the username");
+        }
+        
+        $parameters = array();
+        $parameters["username"] = array($username);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/watchers".$expandQuery;            
+        $this->method = "DELETE";
+    }
+    
+    /**
+     * Returns all work logs for an issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
+     */
+    public function getAllWorklogIssue($idOrKey)
+    {              
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog";            
+        $this->method = "GET";
+    }
+    
+    /**
+     * Adds a new worklog entry to an issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
+     */
+    public function addNewWorklogIssue($idOrKey, $worklog)
+    {                      
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog";            
+        $this->method = "POST";
+    }
+    
+    /**
+     * Set the new value for the remaining estimate field. e.g. "2d" and add a new worklog entry to an issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $newRemaing the new value for the remaining estimate field. e.g. "2d"
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
+     */
+    public function setRemainingEstimateWorklogIssue($idOrKey, $newRemaing, $worklog)
+    {                          
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("new");
+        $parameters["newEstimate"] = array($newRemaing);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog".$expandQuery;            
+        $this->method = "POST";
+    }
+    
+     /**
+     * Set the new value for the remaining estimate field. e.g. "2d" and add a new worklog entry to an issue.
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $reduceAmmount  the amount to reduce the remaining estimate by e.g. "2d"
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
+     */
+    public function reduceRemainingEstimateWorklogIssue($idOrKey, $reduceAmmount, $worklog)
+    {                          
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("manual");
+        $parameters["reduceBy"] = array($reduceAmmount);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog".$expandQuery;            
+        $this->method = "POST";
+    }
+    
+    /**
+     * Set the new value for the estimated field. e.g. "2d"
+     * 
+     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $newAmmount the new value for the estimated field. e.g. "2d"
+     * 
+     * @return void
+     */
+    public function setNewEstimatedTimeIssue($idOrKey, $newAmmount)
+    {
+        $updateValues = array("update" => array("timetracking" => array(array("edit" => array("originalEstimate" => $newAmmount)))));
+
+        $this->setOptions(array("json" => $updateValues));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey;
+        $this->method = "PUT";
+    }
+
 }

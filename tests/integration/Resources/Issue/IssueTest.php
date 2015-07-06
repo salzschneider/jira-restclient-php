@@ -277,34 +277,6 @@ class ApiIssueTest extends IntegrationBaseTest
         $this->assertFalse($result->hasError()); 
     } 
     
-    public function testGetAllCommentsIssueTrue()
-    {
-        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
-                               "verify"    => self::$isVerified);
-
-        $config = new Config(self::$jiraRestHost);
-        $config->addRequestConfigArray($defaultOption);   
-
-        $api = new Api($config);
-        $issueResource = new Issue();       
-        $issueResource->getAllCommentsIssue(self::$foreverIssueId, false);        
-        $result = $api->getRequestResult($issueResource);
-        $this->assertFalse($result->hasError()); 
-        
-        $response = $result->getResponse();
-        $comments = $response["comments"];
-        $this->assertFalse(array_key_exists("renderedBody", $comments[0])); 
-        
-        //with rendered body
-        $issueResource->getAllCommentsIssue(self::$foreverIssueId, true);       
-        $result = $api->getRequestResult($issueResource);        
-        $this->assertFalse($result->hasError());
-        
-        $response = $result->getResponse();
-        $comments = $response["comments"];
-        $this->assertTrue(array_key_exists("renderedBody", $comments[0])); 
-    } 
-    
     public function testAddCommentIssueTrue()
     {
         $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
@@ -334,7 +306,35 @@ class ApiIssueTest extends IntegrationBaseTest
         
         $response = $result->getResponse();
         $this->assertTrue(array_key_exists("renderedBody", $response)); 
-    } 
+    }
+    
+    public function testGetAllCommentsIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();       
+        $issueResource->getAllCommentsIssue(self::$foreverIssueId, false);        
+        $result = $api->getRequestResult($issueResource);
+        $this->assertFalse($result->hasError()); 
+        
+        $response = $result->getResponse();
+        $comments = $response["comments"];
+        $this->assertFalse(array_key_exists("renderedBody", $comments[0])); 
+        
+        //with rendered body
+        $issueResource->getAllCommentsIssue(self::$foreverIssueId, true);       
+        $result = $api->getRequestResult($issueResource);        
+        $this->assertFalse($result->hasError());
+        
+        $response = $result->getResponse();
+        $comments = $response["comments"];
+        $this->assertTrue(array_key_exists("renderedBody", $comments[0])); 
+    }          
     
     public function testAddCommentIssueFalse()
     {
@@ -490,5 +490,325 @@ class ApiIssueTest extends IntegrationBaseTest
         $result = $api->getRequestResult($issueResource);  
        
         $this->assertFalse($result->hasError());        
-    }         
+    }    
+    
+    public function testGetTransitionIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();       
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId);
+        $result = $api->getRequestResult($issueResource);     
+        $this->assertFalse($result->hasError()); 
+        
+        //get a valid transition id without fields
+        $reponse = $result->getResponse();
+        $transId = $reponse['transitions'][0]['id'];
+        $this->assertFalse(array_key_exists("fields", $reponse['transitions'][0])); 
+        
+        //test with id
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId, false, $transId);
+        $result = $api->getRequestResult($issueResource);     
+        $reponse = $result->getResponse();
+        $specTransId = $reponse['transitions'][0]['id'];
+        $this->assertSame($specTransId, $transId); 
+        
+        //test with id with fields
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId, true, $transId);
+        $result = $api->getRequestResult($issueResource);     
+        $reponse = $result->getResponse();
+        $specTransId = $reponse['transitions'][0]['id'];
+        $this->assertSame($specTransId, $transId); 
+        
+        //with fields
+        $this->assertTrue(array_key_exists("fields", $reponse['transitions'][0]));                
+    }
+    
+    public function testGetTransitionIssueFalse()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();       
+        
+        //invalid transaction id
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId, false, "WRONG");
+        $result = $api->getRequestResult($issueResource);             
+        $this->assertTrue($result->hasError());            
+    }
+    
+    /**
+     * @todo fix add comment: https://answers.atlassian.com/questions/171856/jira-rest-api-for-transitions-not-working
+     */
+    public function testPerformTransitionIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();  
+                        
+        //get a valid transition id without fields
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId, true);
+        $result = $api->getRequestResult($issueResource);    
+        $reponse = $result->getResponse();        
+        $this->assertFalse($result->hasError());  
+        $transId = $reponse['transitions'][0]['id'];
+ 
+        //create transition array
+        $data = array("update"       => array("comment"    => array(array("add" => array("body" => "Transition completed.")))),                      
+                      "transition"   => array("id"         => $transId));
+    
+        $issueResource->performTransitionIssue(self::$foreverIssueId, $data, true);
+        $result = $api->getRequestResult($issueResource);                    
+        $this->assertFalse($result->hasError()); 
+        
+        //get a valid transition id without fields
+        $issueResource->getAllTransitionIssue(self::$foreverIssueId, true);
+        $result = $api->getRequestResult($issueResource);    
+        $reponse = $result->getResponse();        
+        $this->assertFalse($result->hasError());  
+        $transId = $reponse['transitions'][0]['id'];
+ 
+        //create transition array
+        $data = array("update"       => array("comment"    => array(array("add" => array("body" => "Transition completed.")))),                      
+                      "transition"   => array("id"         => $transId));
+        
+        $issueResource->performTransitionIssue(self::$foreverIssueId, $data, false);
+        $result = $api->getRequestResult($issueResource);   
+        
+        $this->assertFalse($result->hasError());  
+    }
+    
+    /**
+     * @expectedException \JiraRestlib\Resources\ResourcesException
+     */
+    public function testPerformTransitionIssueFalse()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                                 
+ 
+        //create transition array
+        $data = array();
+    
+        $issueResource->performTransitionIssue(self::$foreverIssueId, $data, true);
+        $result = $api->getRequestResult($issueResource);                    
+    }
+    
+    public function testVoteIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+        $issueResource->voteIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource);           
+        $this->assertFalse($result->hasError());        
+        
+        $issueResource->getVoteIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource); 
+        $response = $result->getResponse();       
+        $this->assertFalse($result->hasError());      
+        $this->assertNotEmpty($response['voters']);
+        
+        $issueResource->deleteVoteIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource);         
+        $this->assertFalse($result->hasError()); 
+        
+        $issueResource->getVoteIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource); 
+        $response = $result->getResponse();
+       
+        $this->assertEmpty($response['voters']);
+    } 
+    
+    public function testWatcherIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+        $issueResource->addWatcherIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource);           
+        $this->assertFalse($result->hasError());   
+                
+        $issueResource->getWatchersIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource); 
+        $response = $result->getResponse();       
+        $this->assertFalse($result->hasError());     
+        $watchers = array();
+        
+        foreach($response['watchers'] as $watcher)
+        {
+            $watchers[] = $watcher['name'];
+        }
+   
+        $this->assertContains(self::$jiraRestUsername, $watchers);
+        
+        $issueResource->removeWatcherIssue(self::$foreverIssueId, "jirapitest");        
+        $result = $api->getRequestResult($issueResource);          
+        $this->assertFalse($result->hasError()); 
+        
+        $issueResource->getWatchersIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource); 
+        $response = $result->getResponse();
+      
+        $watchers = array();
+        
+        foreach($response['watchers'] as $watcher)
+        {
+            $watchers[] = $watcher['name'];
+        }
+   
+        $this->assertNotContains(self::$jiraRestUsername, $watchers);
+    } 
+    
+    /**
+     * @expectedException \JiraRestlib\Resources\ResourcesException
+     */
+    public function testWatcherIssueFalse()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                                  
+        
+        $issueResource->removeWatcherIssue(self::$foreverIssueId, null);        
+        $result = $api->getRequestResult($issueResource);          
+    }
+    
+    public function testGetAllWorklogIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+        $issueResource->getAllWorklogIssue(self::$foreverIssueId);        
+        $result = $api->getRequestResult($issueResource);    
+        $this->assertFalse($result->hasError());        
+    } 
+    
+    public function testAddNewWorklogIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+        //worklog array - 1 hour worklog
+        $worklog = array("timeSpentSeconds" => 3600,
+                         "comment"          => "1 h work");
+        
+        $issueResource->addNewWorklogIssue(self::$foreverIssueId, $worklog);        
+        $result = $api->getRequestResult($issueResource);       
+        $this->assertFalse($result->hasError());        
+    }  
+    
+    public function testSetWorklogEstimationIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+         //worklog array - 1 hour worklog
+        $worklog = array("timeSpentSeconds" => 1800,
+                         "comment"          => "0.5 h work");
+        
+        $issueResource->setRemainingEstimateWorklogIssue(self::$foreverIssueId, "6 d", $worklog);        
+        $result = $api->getRequestResult($issueResource);       
+       
+        $this->assertFalse($result->hasError());        
+    } 
+    
+    public function testReduceRemainingEstimateWorklogIssueTrue()
+    {
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+         //worklog array - 1 hour worklog
+        $worklog = array("timeSpentSeconds" => 1800,
+                         "comment"          => "0.5 h work");
+        
+        $issueResource->reduceRemainingEstimateWorklogIssue(self::$foreverIssueId, "1 d", $worklog);        
+        $result = $api->getRequestResult($issueResource);       
+       
+        $this->assertFalse($result->hasError());        
+    }
+    
+    public function testSetNewEstimatedTimeIssueTrue()
+    {
+        $estimateTime = rand(1,4)."d";
+        
+        $defaultOption = array("auth"      => array(self::$jiraRestUsername, self::$jiraRestPassword),
+                               "verify"    => self::$isVerified);
+
+        $config = new Config(self::$jiraRestHost);
+        $config->addRequestConfigArray($defaultOption);   
+
+        $api = new Api($config);
+        $issueResource = new Issue();                  
+        
+        $issueResource->setNewEstimatedTimeIssue(self::$foreverIssueId, $estimateTime);        
+        $result = $api->getRequestResult($issueResource);   
+        $this->assertFalse($result->hasError());    
+        
+        $issueResource->getIssue(self::$foreverIssueId , array("timetracking"), array("name"));     
+        $result = $api->getRequestResult($issueResource);  
+        $response = $result->getResponse();
+        
+        $originEst = $response["fields"]["timetracking"]["originalEstimate"];
+        $this->assertSame($originEst, $estimateTime);  
+    }
 }
