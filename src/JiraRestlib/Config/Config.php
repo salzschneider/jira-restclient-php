@@ -1,5 +1,6 @@
 <?php
 namespace JiraRestlib\Config;
+use JiraRestlib\Result\ResultAbstract;
 
 /**
  * Config container class
@@ -51,6 +52,14 @@ class Config
      */        
     protected static $configValidator = array(self::HTTPCLIENT => array("guzzle", "curl"));
     
+    /**
+     * Valid response formats - array, object
+     * 
+     * @var array 
+     */
+    protected static $validReponseFormats = array(ResultAbstract::RESPONSE_FORMAT_ARRAY,
+                                                  ResultAbstract::RESPONSE_FORMAT_OBJECT);
+    
     /**     
      * Setting minimum configuration values
      * 
@@ -64,6 +73,114 @@ class Config
         $this->addCommonConfig(self::JIRA_HOST, $jiraBaseUrl);   
         $this->addCommonConfig(self::HTTPCLIENT, $httpclient);       
     }    
+    
+    /**
+     * Set Jira hostname
+     * 
+     * @param string $hostname Jira base url e.g https://myjira.com/ 
+     * @return void
+     */
+    public function setJiraHost($hostname)
+    {
+        $this->addCommonConfig(self::JIRA_HOST, $hostname);
+    }
+    
+    /**
+     * Set httpclient type. Supported: guzzle or curl
+     * 
+     * @param string $httpclient A valid httpclient type (guzzle or curl)
+     * @return void
+     */
+    public function setHttpClientType($httpclient)
+    {
+        $this->addCommonConfig(self::HTTPCLIENT, $httpclient);
+    }
+    
+    /**
+     * Set username and password to authenticate to JIRA via REST 
+     * 
+     * @param string $username JIRA username
+     * @param string $password JIRA password
+     * @return void
+     * 
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    public function setJiraAuth($username, $password)
+    {   
+        if(empty($username))
+        {
+             throw new \JiraRestlib\Config\ConfigException("Username mustn't be empty.");
+        }
+        
+        if(empty($password))
+        {
+             throw new \JiraRestlib\Config\ConfigException("Password mustn't be empty.");
+        }
+        
+        $this->addRequestConfig("auth", array($username, $password));
+    }
+    
+    /**
+     * Set SSL verification method
+     * 
+     * @param boolean $needVerification is neccessary to check ssl cert
+     * @param string $caPath (optional) if needVerifincation true, we can set the SSL CA Bundle absolute path
+     * @return void
+     * 
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    public function setSSLVerification($needVerification, $caPath = "")
+    {
+        if(!is_bool($needVerification))
+        {
+            throw new \JiraRestlib\Config\ConfigException("Need verification has to be boolean: ".$needVerification);
+        }
+        
+        if($needVerification)
+        {
+            if(!empty($caPath))
+            {
+                $this->checkCAPath($caPath);                   
+                $this->addRequestConfig("verify", $caPath);
+            }
+            else
+            {
+                 $this->addRequestConfig("verify", true);          
+            }
+        }
+        else
+        {
+            $this->addRequestConfig("verify", false);          
+        }
+    }
+    
+    /**
+     * Is a valid CA Bundle path
+     * 
+     * @param string $caPath SSL CA Bundle absolute path
+     * @return void
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    protected function checkCAPath($caPath)
+    {
+        if (!file_exists($caPath))
+        {
+            throw new \JiraRestlib\Config\ConfigException("SSL CA bundle not found: ".$caPath);
+        }   
+    }
+    
+    /**
+     * Set valid response format
+     * 
+     * @param string $responseFormat - array, object 
+     * @return void
+     * 
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    public function setResponseFormat($responseFormat)
+    {   
+        $this->addCommonConfig(Config::RESPONSE_FORMAT, $responseFormat);
+    }
 
     /**
      * Get special config value set with parameter index in common config
@@ -185,6 +302,11 @@ class Config
             throw new \JiraRestlib\Config\ConfigException("Jira base url config value is empty. Config index: ".self::JIRA_HOST);
         }
         
+        if($index == self::RESPONSE_FORMAT && !$this->isValidResponseFormat($value))
+        {
+            throw new \JiraRestlib\Config\ConfigException("Response format is invalid. It can be array or object: ".$value);
+        }
+        
         $this->config[self::COMMON][$index] = $value;
         return $this;
     }
@@ -199,14 +321,14 @@ class Config
     {       
         $isValid = false;
         
-        if(in_array($httpclient, self::$configValidator[self::HTTPCLIENT]))
+        if(in_array($httpclient, self::$configValidator[self::HTTPCLIENT], true))
         {           
             $isValid = true;
         }
         
         return $isValid;
     }
-    
+
      /**
       * Is the parameter a valid url
       * 
@@ -224,6 +346,25 @@ class Config
         
         return $isValid;
     }
+            
+    /**
+      * Is the parameter a valid response format - array, object
+      * 
+      * @param string $responseFormat 
+      * @return boolean
+      */
+    protected function isValidResponseFormat($responseFormat)
+    {       
+        $isValid = false;
+        
+        if(in_array($responseFormat, self::$validReponseFormats, true))
+        {           
+            $isValid = true;
+        }
+        
+        return $isValid;
+    }
+    
 
     /**
      * Add or replace a bunch of key config value in the common part of config

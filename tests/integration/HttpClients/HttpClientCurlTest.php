@@ -51,7 +51,7 @@ class HttpClientCurlTest extends IntegrationBaseTest
     
     public function testGetServerInfoCertTrue()
     {
-        $defaultOption = array("verify"    => __DIR__."/apocalypse_certificate_authority.crt");
+        $defaultOption = array("verify"    => __DIR__."/../../lib/apocalypse_certificate_authority.crt");
 
         $config = new Config(self::$jiraRestHost);
         $config->addCommonConfig(Config::HTTPCLIENT, 'curl');

@@ -69,8 +69,47 @@ class GeneralApiTest extends IntegrationBaseTest
         $this->assertFalse($result->hasError()); 
     }
     
+    public function testGetServerInfoSetConfigTrue()
+    {        
+        $config = new Config(self::$jiraRestHost);
+        
+        //using set shortcuts
+        $config->setJiraHost(self::$jiraRestHost);
+        $config->setHttpClientType("guzzle");        
+        $config->setSSLVerification(false);
+        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
+        $config->setResponseFormat(\JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_ARRAY);
+        
+        $api = new Api($config);
+        $serverInfResource = new ServerInfo();
+        $serverInfResource->getServerInfo(false);  
+
+        $result = $api->getRequestResult($serverInfResource);
+        
+        $this->assertFalse($result->hasError()); 
+        $this->assertTrue(is_array($result->getResponse()));
+    }
+    
+    public function testGetServerInfoSetConfig2True()
+    {        
+        $config = new Config(self::$jiraRestHost);
+        
+        //using set shortcuts  
+        $config->setSSLVerification(true,  __DIR__."/../../lib/apocalypse_certificate_authority.crt");
+        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
+        $config->setResponseFormat(\JiraRestlib\Result\ResultAbstract::RESPONSE_FORMAT_OBJECT);
+        
+        $api = new Api($config);
+        $serverInfResource = new ServerInfo();
+        $serverInfResource->getServerInfo(false);  
+
+        $result = $api->getRequestResult($serverInfResource);      
+        $this->assertFalse($result->hasError()); 
+        $this->assertInstanceOf("stdClass", $result->getResponse());
+    }
+    
     /**
-     * @expectedException \JiraRestlib\Result\ResultException
+     * @expectedException \JiraRestlib\Config\ConfigException
      */
     public function testGetServerInfoFalse()
     {

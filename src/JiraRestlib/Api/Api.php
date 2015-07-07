@@ -8,7 +8,6 @@ use JiraRestlib\Resources\ResourcesAbstract;
 use JiraRestlib\Result\ResultArray;
 use JiraRestlib\Result\ResultObject;
 use JiraRestlib\Result\ResultAbstract;
-use JiraRestlib\Result\ResultException;
 
 class Api
 {        
@@ -107,14 +106,12 @@ class Api
             
             switch ($format)
             {
-                case ResultAbstract::RESPONSE_FORMAT_ARRAY:
-                    $result = new ResultArray($this->httpClient);  
-                    break;
                 case ResultAbstract::RESPONSE_FORMAT_OBJECT:
                     $result = new ResultObject($this->httpClient);  
                     break;
                 default:
-                    throw new ResultException("Invalid result format: ".$format);
+                    $result = new ResultArray($this->httpClient);  
+                    break;
             }            
         }
         else

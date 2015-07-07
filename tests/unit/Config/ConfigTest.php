@@ -3,6 +3,7 @@
 use Mockery as m;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Tests\UnitBaseTest;
+use JiraRestlib\Result\ResultAbstract;
 
 class ConfigTest extends UnitBaseTest
 {
@@ -100,6 +101,34 @@ class ConfigTest extends UnitBaseTest
                       Config::JIRA_HOST  => "http://new.jira.com")),  
           array(array("key1"             => "value1",
                       Config::JIRA_HOST  => null)),
+        );
+    }
+    
+    public function invalidAuth()
+    {
+        return array(
+          array(array(null, null)),
+          array(array(null, "passwd")),
+          array(array("username", null)),
+          array(array(null, "password")),
+        );
+    }
+    
+    public function invalidSSL()
+    {
+        return array(
+          array(null, null),
+          array(true, "WRONG_PATH"),  
+        );
+    }
+    
+    public function invalidResponseFormat()
+    {
+        return array(
+          array(null),
+          array(true),  
+          array(12), 
+          array("arrayWrong"),   
         );
     }
     
@@ -282,6 +311,126 @@ class ConfigTest extends UnitBaseTest
          $result = $config->hasRequestIndex("WRONG");
          
          $this->assertFalse($result);
+    }
+    
+    public function testSetJiraHostTrue()
+    {
+        $testHostname = "http://test";
+        
+        $config = $this->getNewConfig();
+        $config->setJiraHost($testHostname);
+        
+        $hostName = $config->getCommonConfigByIndex(Config::JIRA_HOST);         
+        $this->assertSame($hostName, $testHostname);
+    }
+    
+    /**
+     * @expectedException \JiraRestlib\Config\ConfigException
+     */
+    public function testSetJiraHostFalse()
+    {                
+        $config = $this->getNewConfig();
+        $config->setJiraHost(null);
+    }
+    
+    public function testSetHttpClientTypeTrue()
+    {
+        $testHttpClient = "guzzle";
+        
+        $config = $this->getNewConfig();
+        $config->setHttpClientType($testHttpClient);
+        
+        $httpClient = $config->getCommonConfigByIndex(Config::HTTPCLIENT);         
+        $this->assertSame($httpClient, $testHttpClient);
+    }
+    
+    /**
+     * @expectedException \JiraRestlib\Config\ConfigException
+     */
+    public function testSetHttpClientTypeFalse()
+    {
+        $testHttpClient = "WRONG";
+        
+        $config = $this->getNewConfig();
+        $config->setHttpClientType($testHttpClient);
+        
+        $httpClient = $config->getCommonConfigByIndex(Config::HTTPCLIENT);
+    }
+    
+    public function testSetJiraAuthTrue()
+    {
+        $testAuth = array("username", "password");
+        
+        $config = $this->getNewConfig();
+        $config->setJiraAuth($testAuth[0], $testAuth[1]);
+        
+        $auth = $config->getRequestConfigByIndex("auth");   
+   
+        $this->assertSame($auth, $testAuth);
+    }
+    
+    /**
+     * @dataProvider invalidAuth
+     * @expectedException \JiraRestlib\Config\ConfigException
+     */
+    public function testSetJiraAuthFalse($auth)
+    {
+        $config = $this->getNewConfig();
+        $config->setJiraAuth($auth[0], $auth[1]);
+    }
+    
+    public function testSetSSLVerificationTrue()
+    {
+        $config = $this->getNewConfig();
+        
+        $config->setSSLVerification(false);        
+        $verify = $config->getRequestConfigByIndex("verify");   
+        $this->assertSame($verify, false);
+        
+        $config->setSSLVerification(true);        
+        $verify = $config->getRequestConfigByIndex("verify");   
+        $this->assertSame($verify, true);
+        
+        $config->setSSLVerification(true, __DIR__."/../../lib/apocalypse_certificate_authority.crt");        
+        $verify = $config->getRequestConfigByIndex("verify");   
+        $this->assertSame($verify, __DIR__."/../../lib/apocalypse_certificate_authority.crt");
+        
+        $config->setSSLVerification(false, __DIR__."/../../lib/apocalypse_certificate_authority.crt");        
+        $verify = $config->getRequestConfigByIndex("verify");   
+        $this->assertSame($verify, false);
+    }
+    
+    /**
+     * @dataProvider invalidSSL
+     * @expectedException \JiraRestlib\Config\ConfigException
+     */
+    public function testSetSSLVerificationFalse($needVer, $caPath)
+    {
+        $config = $this->getNewConfig();
+        $config->setSSLVerification($needVer, $caPath);        
+    }
+    
+    public function testSetResponseFormatTrue()
+    {
+        $config = $this->getNewConfig();
+        
+        $config->setResponseFormat(ResultAbstract::RESPONSE_FORMAT_ARRAY);        
+        $responseFormat = $config->getCommonConfigByIndex(Config::RESPONSE_FORMAT);   
+        $this->assertSame($responseFormat, "array");
+        
+        $config->setResponseFormat(ResultAbstract::RESPONSE_FORMAT_OBJECT);        
+        $responseFormat = $config->getCommonConfigByIndex(Config::RESPONSE_FORMAT);   
+        $this->assertSame($responseFormat, "object");
+    }
+    
+    /**
+     * @dataProvider invalidResponseFormat
+     * @expectedException \JiraRestlib\Config\ConfigException
+     */
+    public function testSetResponseFormatFalse($wrongFormat)
+    {
+        $config = $this->getNewConfig();  
+        $config->setResponseFormat($wrongFormat);        
     }
 
 }
