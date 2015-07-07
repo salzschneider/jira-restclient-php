@@ -618,9 +618,9 @@ class Issue extends ResourcesAbstract
      */
     public function getWorklogByIdIssue($idOrKey, $worklogId)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
         
         $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId;            
@@ -638,9 +638,9 @@ class Issue extends ResourcesAbstract
      */
     public function deleteWorklogIssue($idOrKey, $worklogId)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
 
         $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId;            
@@ -658,9 +658,9 @@ class Issue extends ResourcesAbstract
      */
     public function deleteWorklogLeaveRemainingIssue($idOrKey, $worklogId)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
 
         $parameters = array();
@@ -683,9 +683,9 @@ class Issue extends ResourcesAbstract
      */
     public function deleteWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
         
         $parameters = array();
@@ -709,9 +709,9 @@ class Issue extends ResourcesAbstract
      */
     public function deleteWorklogIncreaseRemainingIssue($idOrKey, $worklogId, $increaseAmmount)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
 
         $parameters = array();
@@ -735,9 +735,9 @@ class Issue extends ResourcesAbstract
      */
     public function updateWorklogIssue($idOrKey, $worklogId, array $worklog)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
         
         $this->setOptions(array("json" => $worklog));
@@ -757,9 +757,9 @@ class Issue extends ResourcesAbstract
      */
     public function updateWorklogLeaveRemainingIssue($idOrKey, $worklogId, array $worklog)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
 
         $parameters = array();
@@ -784,9 +784,9 @@ class Issue extends ResourcesAbstract
      */
     public function updateWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing, array $worklog)
     {               
-        if(!is_integer($worklogId))
+        if(empty($worklogId))
         {
-            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+            throw new ResourcesException("Worklog id mustn't be empty.");
         }
         
         $parameters = array();

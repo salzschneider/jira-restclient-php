@@ -20,15 +20,15 @@ class ApiIssueTest extends IntegrationBaseTest
     {
         return array(
           array(null),
-          array("12"),
-          array("WRONG"),  
+          array(""),
+          array(0),  
         );
     }
     
     public function invalidWorklogIdNumber()
     {
         return array(
-          array(0),
+          array(-1),
           array(1111111111111111),
         );
     }
@@ -865,7 +865,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $response = $result->getResponse();
         $worklogId = $response['worklogs'][0]['id'];
         
-        $issueResource->getWorklogByIdIssue(self::$foreverIssueId, (int)$worklogId);        
+        $issueResource->getWorklogByIdIssue(self::$foreverIssueId, $worklogId);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError());                    
     }
@@ -922,7 +922,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklogId = $response['worklogs'][0]['id'];
         $count = count($response['worklogs']);
         
-        $issueResource->deleteWorklogIssue(self::$foreverIssueId, (int)$worklogId);        
+        $issueResource->deleteWorklogIssue(self::$foreverIssueId, $worklogId);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError()); 
         
@@ -968,7 +968,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklogId = $response['worklogs'][0]['id'];
         $count = count($response['worklogs']);
         
-        $issueResource->deleteWorklogLeaveRemainingIssue(self::$foreverIssueId, (int)$worklogId);        
+        $issueResource->deleteWorklogLeaveRemainingIssue(self::$foreverIssueId, $worklogId);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError()); 
         
@@ -1014,7 +1014,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklogId = $response['worklogs'][0]['id'];
         $count = count($response['worklogs']);
         
-        $issueResource->deleteWorklogNewRemainingIssue(self::$foreverIssueId, (int)$worklogId, "40d");        
+        $issueResource->deleteWorklogNewRemainingIssue(self::$foreverIssueId, $worklogId, "40d");        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError()); 
         
@@ -1060,7 +1060,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklogId = $response['worklogs'][0]['id'];
         $count = count($response['worklogs']);
         
-        $issueResource->deleteWorklogIncreaseRemainingIssue(self::$foreverIssueId, (int)$worklogId, "2d");        
+        $issueResource->deleteWorklogIncreaseRemainingIssue(self::$foreverIssueId, $worklogId, "2d");        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError()); 
         
@@ -1109,7 +1109,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklog = array("timeSpentSeconds" => 1800,
                          "comment"          => "update worklog");
         
-        $issueResource->updateWorklogIssue(self::$foreverIssueId, (int)$worklogId, $worklog);        
+        $issueResource->updateWorklogIssue(self::$foreverIssueId, $worklogId, $worklog);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError());         
     }
@@ -1154,7 +1154,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklog = array("timeSpentSeconds" => 12500,
                          "comment"          => "update worklog");
         
-        $issueResource->updateWorklogLeaveRemainingIssue(self::$foreverIssueId, (int)$worklogId, $worklog);        
+        $issueResource->updateWorklogLeaveRemainingIssue(self::$foreverIssueId, $worklogId, $worklog);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError());         
     }
@@ -1199,7 +1199,7 @@ class ApiIssueTest extends IntegrationBaseTest
         $worklog = array("timeSpentSeconds" => 4000,
                          "comment"          => "update worklog");
         
-        $issueResource->updateWorklogNewRemainingIssue(self::$foreverIssueId, (int)$worklogId, "30d", $worklog);        
+        $issueResource->updateWorklogNewRemainingIssue(self::$foreverIssueId, $worklogId, "30d", $worklog);        
         $result = $api->getRequestResult($issueResource);          
         $this->assertFalse($result->hasError());         
     }
