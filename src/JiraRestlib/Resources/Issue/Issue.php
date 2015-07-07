@@ -8,7 +8,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns a full representation of the issue for the given issue key.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $fields The list of fields to return for the issue. By default, all fields are return
      * @param array $expand The list of fields to expand the result for more data
      * 
@@ -77,7 +77,7 @@ class Issue extends ResourcesAbstract
     /**
      * Edits an issue from a JSON representation.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $updateValues Fields, historyMetadata etc. that we wanna update.  
      *                            Field should appear either in "fields" or "update", not in both.
      * @return void
@@ -128,7 +128,7 @@ class Issue extends ResourcesAbstract
      * Delete an issue. If the issue has subtasks you must set the parameter deleteSubtasks=true to delete the issue. 
      * You cannot delete an issue without its subtasks also being deleted.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param boolean $isDeleteSubtasks Indicating that any subtasks should also be deleted
      * 
      * @return void
@@ -152,7 +152,7 @@ class Issue extends ResourcesAbstract
     /**
      * Assigns an issue to a user. 
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param string $name Valid jira user name
      * 
      * @return void
@@ -175,7 +175,7 @@ class Issue extends ResourcesAbstract
     /**
      * Automatic assignee 
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e36
@@ -192,7 +192,7 @@ class Issue extends ResourcesAbstract
     /**
      * Remove the assignee. 
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e36
@@ -209,7 +209,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns all comments for an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param boolean $rendered provides body rendered in HTML
      * 
      * @return void
@@ -233,7 +233,7 @@ class Issue extends ResourcesAbstract
     /**
      * Adds a new comment to an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $comment Comment array
      * @param boolean $rendered provides body rendered in HTML
      * 
@@ -259,7 +259,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns a specific comment for an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param integer $commentId Id of a comment (11500)
      * @param boolean $rendered provides body rendered in HTML
      * 
@@ -284,7 +284,7 @@ class Issue extends ResourcesAbstract
     /**
      * Update a specific comment for an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param integer $commentId Id of a comment (11500)
      * @param array $comment Comment array
      * @param boolean $rendered provides body rendered in HTML
@@ -311,7 +311,7 @@ class Issue extends ResourcesAbstract
     /**
      * Delete a specific comment for an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param integer $commentId Id of a comment (11500)
      * 
      * @return void
@@ -326,7 +326,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns the meta data for editing an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e525
@@ -342,7 +342,7 @@ class Issue extends ResourcesAbstract
      * The fields in the metadata correspond to the fields in the transition screen for that transition. 
      * Fields not in the screen will not be in the metadata.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param boolean $isFields If true, all fields are returned
      * @param integer $transitionId id of a specific available transition 
      * 
@@ -374,7 +374,7 @@ class Issue extends ResourcesAbstract
      * If a field is not configured to appear on the transition screen, then it will not be in the transition metadata, 
      * and a field validation error will occur if it is submitted.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $data Transition info: id, filed names, hitstory metadata etc. that we wanna update or set
      * @param boolean $isFields If true, all fields are returned
      * 
@@ -405,7 +405,7 @@ class Issue extends ResourcesAbstract
     /**
      * A REST sub-resource representing the voters on the issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
@@ -419,7 +419,7 @@ class Issue extends ResourcesAbstract
     /**
      * Cast your vote in favour of an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
@@ -433,7 +433,7 @@ class Issue extends ResourcesAbstract
     /**
      * Remove your vote from an issue. (i.e. "unvote")
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
@@ -447,7 +447,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns the list of watchers for the issue with the given key.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
@@ -461,7 +461,7 @@ class Issue extends ResourcesAbstract
     /**
      * Adds a user to an issue's watcher list.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key(i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
@@ -475,7 +475,7 @@ class Issue extends ResourcesAbstract
     /**
      * Removes a user from an issue's watcher list.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param string $username containing the name of the user to remove from the watcher list. Must not be null.
      * 
      * @return void
@@ -499,7 +499,7 @@ class Issue extends ResourcesAbstract
     /**
      * Returns all work logs for an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
@@ -513,13 +513,13 @@ class Issue extends ResourcesAbstract
     /**
      * Adds a new worklog entry to an issue.
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $worklog array representation of the worklog
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
-    public function addNewWorklogIssue($idOrKey, $worklog)
+    public function addNewWorklogIssue($idOrKey, array $worklog)
     {                      
         $this->setOptions(array("json" => $worklog));
         $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog";            
@@ -527,16 +527,16 @@ class Issue extends ResourcesAbstract
     }
     
     /**
-     * Set the new value for the remaining estimate field. e.g. "2d" and add a new worklog entry to an issue.
+     * Add a new worklog entry to an issue and set the new value for the remaining estimate field. e.g. "2d" 
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param string $newRemaing the new value for the remaining estimate field. e.g. "2d"
      * @param array $worklog array representation of the worklog
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
-    public function setRemainingEstimateWorklogIssue($idOrKey, $newRemaing, $worklog)
+    public function addWorklogNewRemainingIssue($idOrKey, $newRemaing, array $worklog)
     {                          
         $parameters = array();
         $parameters["adjustEstimate"] = array("new");
@@ -549,16 +549,16 @@ class Issue extends ResourcesAbstract
     }
     
      /**
-     * Set the new value for the remaining estimate field. e.g. "2d" and add a new worklog entry to an issue.
+     * Add a new worklog entry to an issue and reduce the remaining estimate field. e.g. "2d" 
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
-     * @param string $reduceAmmount  the amount to reduce the remaining estimate by e.g. "2d"
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param string $reduceAmmount the amount to reduce the remaining estimate by e.g. "2d"
      * @param array $worklog array representation of the worklog
      * 
      * @return void
      * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
-    public function reduceRemainingEstimateWorklogIssue($idOrKey, $reduceAmmount, $worklog)
+    public function addWorklogReduceRemainingIssue($idOrKey, $reduceAmmount, array $worklog)
     {                          
         $parameters = array();
         $parameters["adjustEstimate"] = array("manual");
@@ -570,10 +570,30 @@ class Issue extends ResourcesAbstract
         $this->method = "POST";
     }
     
+     /**
+     * Add a new worklog entry to an issue and leaves the estimate as is
+     * 
+     * @param string $idOrKey the issue id or key to delete (i.e. JRA-1330)
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function addWorklogLeaveRemainingIssue($idOrKey, array $worklog)
+    {               
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("leave");
+        $expandQuery = $this->getQueryUri($parameters);
+
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$expandQuery;            
+        $this->method = "POST";
+    }
+    
     /**
      * Set the new value for the estimated field. e.g. "2d"
      * 
-     * @param string $idOrKey the issue id or key to update (i.e. JRA-1330)
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param string $newAmmount the new value for the estimated field. e.g. "2d"
      * 
      * @return void
@@ -584,6 +604,198 @@ class Issue extends ResourcesAbstract
 
         $this->setOptions(array("json" => $updateValues));
         $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey;
+        $this->method = "PUT";
+    }
+    
+    /**
+     * Returns a specific work log for an issue.
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function getWorklogByIdIssue($idOrKey, $worklogId)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+        
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId;            
+        $this->method = "GET";
+    }
+    
+    /**
+     * Deletes an existing worklog entry
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function deleteWorklogIssue($idOrKey, $worklogId)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId;            
+        $this->method = "DELETE";
+    }
+    
+    /**
+     * Deletes an existing worklog entry and leaves the estimate as is
+     * 
+     * @param string $idOrKey the issue id or key to delete (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function deleteWorklogLeaveRemainingIssue($idOrKey, $worklogId)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("leave");
+        $expandQuery = $this->getQueryUri($parameters);
+
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId.$expandQuery;            
+        $this->method = "DELETE";
+    }
+    
+    /**
+     * Deletes an existing worklog entry and sets the estimate to a specific value
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * @param string $newRemaing the new value for the remaining estimate field. e.g. "2d"
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function deleteWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+        
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("new");
+        $parameters["newEstimate"] = array($newRemaing);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId.$expandQuery;            
+        $this->method = "DELETE";
+    }
+    
+    /**
+     * Deletes an existing worklog entry and increases the remaining estimate
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * @param string $increaseAmmount the amount to increase the remaining estimate by e.g. "2d"
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function deleteWorklogIncreaseRemainingIssue($idOrKey, $worklogId, $increaseAmmount)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("manual");
+        $parameters["increaseBy"] = array($increaseAmmount);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId.$expandQuery;            
+        $this->method = "DELETE";
+    }   
+    
+    /**
+     * Updates an existing worklog entry using its JSON representation.
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function updateWorklogIssue($idOrKey, $worklogId, array $worklog)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+        
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId;            
+        $this->method = "PUT";
+    }
+    
+    /**
+     * Updates an existing worklog entry using its JSON representation and leaves the estimate as is
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function updateWorklogLeaveRemainingIssue($idOrKey, $worklogId, array $worklog)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("leave");
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId.$expandQuery;            
+        $this->method = "PUT";
+    }
+    
+    /**
+     * Updates an existing worklog entry using its JSON representation and sets the estimate to a specific value
+     * 
+     * @param string $idOrKey the issue id or key (i.e. JRA-1330)
+     * @param integer $worklogId id of the worklog
+     * @param string $newRemaing the new value for the remaining estimate field. e.g. "2d"
+     * @param array $worklog array representation of the worklog
+     * 
+     * @return void
+     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
+     */
+    public function updateWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing, array $worklog)
+    {               
+        if(!is_integer($worklogId))
+        {
+            throw new ResourcesException("Worklog id has to be integer. Given: ".gettype($worklogId));
+        }
+        
+        $parameters = array();
+        $parameters["adjustEstimate"] = array("new");
+        $parameters["newEstimate"] = array($newRemaing);
+        $expandQuery = $this->getQueryUri($parameters);
+        
+        $this->setOptions(array("json" => $worklog));
+        $this->uri = "/rest/api/".$this->getApiVersion()."/issue/".$idOrKey."/worklog/".$worklogId.$expandQuery;            
         $this->method = "PUT";
     }
 
