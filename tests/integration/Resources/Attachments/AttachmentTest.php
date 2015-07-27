@@ -26,7 +26,7 @@ class AttachmentTest extends IntegrationBaseTest
         $attachmentResource = new Attachments();
 
         //valid filenames with path
-        $files = array(__DIR__."/files/jira.jpg",
+        $files = array(__DIR__."/files/test.zip",                      
                        __DIR__."/files/a.pdf",);
 
         $attachmentResource->addAttachment(self::$foreverIssueId, $files);
@@ -165,7 +165,7 @@ class AttachmentTest extends IntegrationBaseTest
         $attachmentId = $response['fields']['attachment'][0]['id']; 
 
         $attachmentResource->getAttachmentExpandRaw($attachmentId);
-        $result = $api->getRequestResult($attachmentResource);  
+        $result = $api->getRequestResult($attachmentResource);           
         $this->assertFalse($result->hasError()); 
     }
     
