@@ -10,7 +10,6 @@ class ServerInfo extends ResourcesAbstract
      * @param boolean $doHealthCheck
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e887
      */
     public function getServerInfo($doHealthCheck = false)
     {        

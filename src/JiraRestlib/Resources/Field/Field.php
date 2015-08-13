@@ -8,7 +8,6 @@ class Field extends ResourcesAbstract
      * Returns a list of all fields, both System and Custom
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e644
      */
     public function getFields()
     {        
@@ -21,7 +20,6 @@ class Field extends ResourcesAbstract
      * 
      * @param string $customFieldOptionId option id of a custom field (e.g. single choice field)
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e3
      */
     public function getCustomFieldOption($customFieldOptionId)
     {
@@ -34,7 +32,6 @@ class Field extends ResourcesAbstract
      * 
      * @param array $field Representation of the custom field
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e644
      */
     public function addCustomField(array $field)
     {        

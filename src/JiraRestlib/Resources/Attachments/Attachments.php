@@ -11,8 +11,7 @@ class Attachments extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * @param array $files filenames with full path - multipart posts
      * 
-     * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e4287
+     * @return void    
      */
     public function addAttachment($idOrKey, $files)
     {        
@@ -32,7 +31,6 @@ class Attachments extends ResourcesAbstract
      * @param array $attachmentId id of the attachment that we will delete (10760)
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e3550
      */
     public function deleteAttachment($attachmentId)
     {        
@@ -46,7 +44,6 @@ class Attachments extends ResourcesAbstract
      * @param array $attachmentId id of the attachment (10760)
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e3550
      */
     public function getAttachmentMetaById($attachmentId)
     {        
@@ -58,7 +55,6 @@ class Attachments extends ResourcesAbstract
      * Returns the meta information for an attachments, specifically if they are enabled and the maximum upload size allowed.
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e3550
      */
     public function getAttachmentMeta()
     {        
@@ -72,7 +68,6 @@ class Attachments extends ResourcesAbstract
      * @param array $attachmentId id of the attachment (10760)
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e3550
      */
     public function getAttachmentExpandRaw($attachmentId)
     {        
@@ -86,7 +81,6 @@ class Attachments extends ResourcesAbstract
      * @param array $attachmentId id of the attachment (10760)
      * 
      * @return void
-     * https://docs.atlassian.com/jira/REST/latest/#d2e3550
      */
     public function getAttachmentExpandHuman($attachmentId)
     {        

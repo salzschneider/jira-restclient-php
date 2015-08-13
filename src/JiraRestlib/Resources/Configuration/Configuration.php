@@ -9,7 +9,6 @@ class Configuration extends ResourcesAbstract
      * If the time tracking is enabled, it also returns the detailed information about time tracking configuration.
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e3293
      */
     public function getConfiguration()
     {                

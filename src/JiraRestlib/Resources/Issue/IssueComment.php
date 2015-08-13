@@ -11,7 +11,6 @@ class IssueComment extends ResourcesAbstract
      * @param boolean $rendered provides body rendered in HTML
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e91
      */
     public function getAllCommentsIssue($idOrKey, $rendered = false)
     {      
@@ -36,7 +35,6 @@ class IssueComment extends ResourcesAbstract
      * @param boolean $rendered provides body rendered in HTML
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e91
      */
     public function addCommentIssue($idOrKey, array $comment, $rendered = false)
     {      
@@ -62,7 +60,6 @@ class IssueComment extends ResourcesAbstract
      * @param boolean $rendered provides body rendered in HTML
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e145
      */
     public function getCommentByIdIssue($idOrKey, $commentId, $rendered = false)
     {      
@@ -88,7 +85,6 @@ class IssueComment extends ResourcesAbstract
      * @param boolean $rendered provides body rendered in HTML
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e145
      */
     public function updateCommentByIdIssue($idOrKey, $commentId, $comment, $rendered = false)
     {      
@@ -113,7 +109,6 @@ class IssueComment extends ResourcesAbstract
      * @param integer $commentId Id of a comment (11500)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e145
      */
     public function deleteCommentByIdIssue($idOrKey, $commentId)
     {      

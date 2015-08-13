@@ -11,7 +11,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
     public function getAllWorklogIssue($idOrKey)
     {              
@@ -26,7 +25,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
     public function addNewWorklogIssue($idOrKey, array $worklog)
     {                      
@@ -43,7 +41,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
     public function addWorklogNewRemainingIssue($idOrKey, $newRemaing, array $worklog)
     {                          
@@ -65,7 +62,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e717
      */
     public function addWorklogReduceRemainingIssue($idOrKey, $reduceAmmount, array $worklog)
     {                          
@@ -86,7 +82,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function addWorklogLeaveRemainingIssue($idOrKey, array $worklog)
     {               
@@ -106,7 +101,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param integer $worklogId id of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function getWorklogByIdIssue($idOrKey, $worklogId)
     {               
@@ -126,7 +120,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param integer $worklogId id of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function deleteWorklogIssue($idOrKey, $worklogId)
     {               
@@ -146,7 +139,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param integer $worklogId id of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function deleteWorklogLeaveRemainingIssue($idOrKey, $worklogId)
     {               
@@ -171,7 +163,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param string $newRemaing the new value for the remaining estimate field. e.g. "2d"
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function deleteWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing)
     {               
@@ -197,7 +188,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param string $increaseAmmount the amount to increase the remaining estimate by e.g. "2d"
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function deleteWorklogIncreaseRemainingIssue($idOrKey, $worklogId, $increaseAmmount)
     {               
@@ -223,7 +213,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function updateWorklogIssue($idOrKey, $worklogId, array $worklog)
     {               
@@ -245,7 +234,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function updateWorklogLeaveRemainingIssue($idOrKey, $worklogId, array $worklog)
     {               
@@ -272,7 +260,6 @@ class IssueWorklog extends ResourcesAbstract
      * @param array $worklog array representation of the worklog
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e769
      */
     public function updateWorklogNewRemainingIssue($idOrKey, $worklogId, $newRemaing, array $worklog)
     {               

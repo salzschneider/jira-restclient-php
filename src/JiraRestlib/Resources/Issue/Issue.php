@@ -13,7 +13,6 @@ class Issue extends ResourcesAbstract
      * @param array $expand The list of fields to expand the result for more data
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e212
      */
     public function getIssue($idOrKey, $fields = array(), $expand = array())
     {        
@@ -37,7 +36,6 @@ class Issue extends ResourcesAbstract
      *                         "description" => "some description here"));
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e2
      */
     public function createIssue($issue)
     {        
@@ -65,7 +63,6 @@ class Issue extends ResourcesAbstract
      * $issueList = array("issueUpdates" => array($issue1, $issue2));
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e3243
      */
     public function createIssueBulk($issueList)
     {        
@@ -81,7 +78,6 @@ class Issue extends ResourcesAbstract
      * @param array $updateValues Fields, historyMetadata etc. that we wanna update.  
      *                            Field should appear either in "fields" or "update", not in both.
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e459
      */    
     public function editIssue($idOrKey, $updateValues)
     {
@@ -104,7 +100,6 @@ class Issue extends ResourcesAbstract
      * @param boolean $isFields If true, all fields are returned
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e494
      */
     public function createMetadata(array $projectIds = array(), array $projectKeys = array(), array $issueTypeIds = array(), array $issueTypeNames = array(), $isFields = false)
     {        
@@ -132,7 +127,6 @@ class Issue extends ResourcesAbstract
      * @param boolean $isDeleteSubtasks Indicating that any subtasks should also be deleted
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e212
      */
     public function deleteIssue($idOrKey, $isDeleteSubtasks = false)
     {
@@ -156,7 +150,6 @@ class Issue extends ResourcesAbstract
      * @param string $name Valid jira user name
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e36
      */
     public function addAssigneeIssue($idOrKey, $name)
     {
@@ -178,7 +171,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e36
      */
     public function addAutoAssigneeIssue($idOrKey)
     {
@@ -195,7 +187,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e36
      */
     public function removeAssigneeIssue($idOrKey)
     {      
@@ -212,7 +203,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e525
      */
     public function editMetadIssue($idOrKey)
     {      
@@ -230,7 +220,6 @@ class Issue extends ResourcesAbstract
      * @param integer $transitionId id of a specific available transition 
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e280
      */
     public function getAllTransitionIssue($idOrKey, $isFields = false, $transitionId = null)
     {      
@@ -262,7 +251,6 @@ class Issue extends ResourcesAbstract
      * @param boolean $isFields If true, all fields are returned
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e280
      */
     public function performTransitionIssue($idOrKey, array $data, $isFields = false)
     {      
@@ -291,7 +279,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
      */
     public function getVoteIssue($idOrKey)
     {              
@@ -305,7 +292,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
      */
     public function voteIssue($idOrKey)
     {              
@@ -319,7 +305,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e352
      */
     public function deleteVoteIssue($idOrKey)
     {              
@@ -333,7 +318,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key (i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
      */
     public function getWatchersIssue($idOrKey)
     {              
@@ -347,7 +331,6 @@ class Issue extends ResourcesAbstract
      * @param string $idOrKey the issue id or key(i.e. JRA-1330)
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
      */
     public function addWatcherIssue($idOrKey)
     {              
@@ -362,7 +345,6 @@ class Issue extends ResourcesAbstract
      * @param string $username containing the name of the user to remove from the watcher list. Must not be null.
      * 
      * @return void
-     * @link https://docs.atlassian.com/jira/REST/latest/#d2e393
      */
     public function removeWatcherIssue($idOrKey, $username)
     {              
