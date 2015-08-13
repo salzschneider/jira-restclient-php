@@ -432,5 +432,23 @@ class ConfigTest extends UnitBaseTest
         $config = $this->getNewConfig();  
         $config->setResponseFormat($wrongFormat);        
     }
+    
+    public function testSetArrayResponseFormatTrue()
+    {
+        $config = $this->getNewConfig();
+        
+        $config->setArrayResponseFormat();        
+        $responseFormat = $config->getCommonConfigByIndex(Config::RESPONSE_FORMAT);   
+        $this->assertSame($responseFormat, "array");
+    }
+    
+    public function testSetObjectResponseFormatTrue()
+    {
+        $config = $this->getNewConfig();
+        
+        $config->setObjectResponseFormat();        
+        $responseFormat = $config->getCommonConfigByIndex(Config::RESPONSE_FORMAT);   
+        $this->assertSame($responseFormat, "object");
+    }
 
 }

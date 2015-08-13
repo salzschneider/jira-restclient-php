@@ -5,20 +5,19 @@ require __DIR__.'/../../Init/init.php';
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Attachments\Attachments;
-use JiraRestlib\Result\ResultAbstract;
 
 $defaultOption = array("auth"      => array(USERNAME, PASSWORD),
                        "verify"    => SSL_VERIFICATION);
 
 $config = new Config(JIRA_HOST);
-$config->addRequestConfigArray($defaultOption);
-$config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+$config->setSSLVerification(SSL_VERIFICATION);
+$config->setJiraAuth(USERNAME, PASSWORD);
 
 $api = new Api($config);
 $attachmentResource = new Attachments();
 
 //use an appropriate issue name or id
-$issueKey = "JIR-5";
+$issueKey = "JIR-2";
 
 //valid filenames with path
 $files = array("files/jira.jpg",

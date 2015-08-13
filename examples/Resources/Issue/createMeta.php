@@ -5,19 +5,15 @@ require __DIR__.'/../../Init/init.php';
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Issue\Issue;
-use JiraRestlib\Result\ResultAbstract;
-
-$defaultOption = array("auth"      => array(USERNAME, PASSWORD),
-                       "verify"    => SSL_VERIFICATION);
 
 $config = new Config(JIRA_HOST);
-$config->addRequestConfigArray($defaultOption);
-$config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+$config->setSSLVerification(SSL_VERIFICATION);
+$config->setJiraAuth(USERNAME, PASSWORD);
 
 $api = new Api($config);
 $issueResource = new Issue();
 
-//request
+//use appropriate values from your JIRA
 $issueResource->createMetadata(array(), array("JIR"), array("3"), array(), true);
 
 $result = $api->getRequestResult($issueResource);

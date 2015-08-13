@@ -5,20 +5,19 @@ require __DIR__.'/../../Init/init.php';
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Issue\Issue;
-use JiraRestlib\Result\ResultAbstract;
-
-$defaultOption = array("auth"      => array(USERNAME, PASSWORD),
-                       "verify"    => SSL_VERIFICATION);
 
 $config = new Config(JIRA_HOST);
-$config->addRequestConfigArray($defaultOption);
-$config->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+$config->setSSLVerification(SSL_VERIFICATION);
+$config->setJiraAuth(USERNAME, PASSWORD);
+
+//it is not necessary, array is the default
+$config->setArrayResponseFormat();
 
 $api = new Api($config);
 $issueResource = new Issue();
 
 /**
- * use appropriate values
+ * use appropriate values from your JIRA
  * request - id-s have to be string
  */
 $issue = array("fields" => array("project"     => array("id" => "11100"),
@@ -28,7 +27,6 @@ $issue = array("fields" => array("project"     => array("id" => "11100"),
                                  "description" => "some description here"));
 
 $issueResource->createIssue($issue);
-
 $result = $api->getRequestResult($issueResource);
 
 $resultObject = $result->getResponse();

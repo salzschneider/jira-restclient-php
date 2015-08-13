@@ -10,15 +10,6 @@ class IssueTypeTest extends IntegrationBaseTest
     const NEW_ISSUE_TYPE_NAME = "deleteIssueType";
     const NEW_ISSUE_TYPE_DESCRIPTION = "new description";
     
-    /*public function invalidName()
-    {
-        return array(
-          array("-1"),
-          array(-1),
-          array(null),            
-        );
-    }*/
-    
     public function tearDown()
     {
         m::close();

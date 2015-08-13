@@ -181,6 +181,30 @@ class Config
     {   
         $this->addCommonConfig(Config::RESPONSE_FORMAT, $responseFormat);
     }
+    
+    /**
+     * Set array response format
+     * 
+     * @return void
+     * 
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    public function setArrayResponseFormat()
+    {   
+        $this->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_ARRAY);
+    }
+    
+    /**
+     * Set object response format
+     * 
+     * @return void
+     * 
+     * @throws \JiraRestlib\Config\ConfigException
+     */
+    public function setObjectResponseFormat()
+    {   
+        $this->addCommonConfig(Config::RESPONSE_FORMAT, ResultAbstract::RESPONSE_FORMAT_OBJECT);
+    }
 
     /**
      * Get special config value set with parameter index in common config
