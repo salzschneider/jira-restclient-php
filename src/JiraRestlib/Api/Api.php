@@ -87,7 +87,7 @@ class Api
     /**
      * Get the result of the request. The resource has to be set. 
      * 
-     * @param ResourcesAbstract $resource 
+     * @param JiraRestlib\Resources\ResourcesAbstract $resource 
      * @return JiraRestlib\Result\ResultAbstract
      */
     public function getRequestResult(ResourcesAbstract $resource)
