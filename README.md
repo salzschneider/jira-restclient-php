@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/salzschneider/jira-restclient-php.svg?branch=master)](https://travis-ci.org/salzschneider/jira-restclient-php)
 
-It will be an Atlassian JIRA Rest API client library for PHP. You will be able to communicate with your JIRA easly using this library.
-It's an alpha/prototype version, **please don't use it yet**. 
+It will be an Atlassian JIRA Rest API client library for PHP. I hope you will be able to use your Jira API easier with this. 
+It's an alpha/prototype version, **please don't use it in production environment**. 
 
 Installing
 ----------------
@@ -13,16 +13,15 @@ Installing
 Examples
 ----------------
 You can try some working test. 
-- create a copy from initSample.php in examples/Init folder named init.php
+- create a copy from initSample.php in examples/Init and rename it to init.php
 - use your JIRA settings in the init.php
-- try the PHP-s in the examples folder via cli
+- execute example PHP scripts, you can find them in the examples/Resources folder
 
 Missing features
 ----------------
 - all JIRA API function implementations - issue, project, comment etc.
-- httpClientCurl doesn't work yet - it will be a backup solution if you have [Guzzle](https://github.com/guzzle/guzzle) conflict or don't wanna use that package
-- lots of unit and automated JIRA API tests (in travis)
-- documentation and examples
+- httpClientCurl doesn't contain all Guzzle feature - it will be a backup solution if you have [Guzzle](https://github.com/guzzle/guzzle) conflict or you don't wanna use that package
+- documentation
 - oAuth2 
 
 Requirements
