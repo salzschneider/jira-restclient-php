@@ -6,9 +6,6 @@ use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
 use JiraRestlib\Resources\Attachments\Attachments;
 
-$defaultOption = array("auth"      => array(USERNAME, PASSWORD),
-                       "verify"    => SSL_VERIFICATION);
-
 $config = new Config(JIRA_HOST);
 $config->setSSLVerification(SSL_VERIFICATION);
 $config->setJiraAuth(USERNAME, PASSWORD);
