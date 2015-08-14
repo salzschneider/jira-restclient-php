@@ -12,14 +12,14 @@ Installing
 
 Examples
 ----------------
-You can try some working test. 
+You can find some example script to check how it works. Every resource works on the same way. 
 - create a copy from initSample.php in examples/Init and rename it to init.php
 - use your JIRA settings in the init.php
 - execute example PHP scripts, you can find them in the examples/Resources folder
 
 Missing features
 ----------------
-- all JIRA API function implementations - issue, project, comment etc.
+- all JIRA API resources - issue, project, comment etc. - [JIRA Rest API Doc.](https://docs.atlassian.com/jira/REST/latest/)
 - httpClientCurl doesn't contain all Guzzle feature - it will be a backup solution if you have [Guzzle](https://github.com/guzzle/guzzle) conflict or you don't wanna use that package
 - documentation
 - oAuth2 
