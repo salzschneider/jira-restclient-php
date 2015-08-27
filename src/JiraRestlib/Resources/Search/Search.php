@@ -36,7 +36,7 @@ class Search extends ResourcesAbstract
     
     /**
      * Performs a search using JQL. 
-     * If the JQL query is too large to be encoded as a query param you should instead POST to this resource.
+     * If the JQL query is too large to be encoded as a query param.
      * 
      * @param string $jql Sorting the jql parameter is a full JQL expression, and includes an ORDER BY clause.
      * @param integer $startAt The index of the first issue to return (0-based)
