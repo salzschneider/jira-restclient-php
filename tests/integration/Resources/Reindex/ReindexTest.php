@@ -59,49 +59,6 @@ class ReindexTest extends IntegrationBaseTest
         $this->assertFalse($result->hasError());  
     }
     
-    public function testDoReindexIssueTrue()
-    {
-        $config = new Config(self::$jiraRestHost);
-        $config->setSSLVerification(self::$isVerified);
-        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
-        
-        $api = new Api($config);
-        $reindexResource = new Reindex();
-
-        $reindexResource->doReindexIssue(self::$foreverIssueId);
-        $result = $api->getRequestResult($reindexResource);      
-        $this->assertFalse($result->hasError()); 
-    }
-    
-    public function testDoReindexIssueWithParametersTrue()
-    {
-        $config = new Config(self::$jiraRestHost);
-        $config->setSSLVerification(self::$isVerified);
-        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
-        
-        $api = new Api($config);
-        $reindexResource = new Reindex();
-
-        $reindexResource->doReindexIssue(self::$foreverIssueId, true, true, true);
-        $result = $api->getRequestResult($reindexResource);           
-        $this->assertFalse($result->hasError()); 
-    }
-    
-    public function testDoReindexRequestTrue()
-    {
-        $config = new Config(self::$jiraRestHost);
-        $config->setSSLVerification(self::$isVerified);
-        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
-        
-        $api = new Api($config);
-        $reindexResource = new Reindex();
-
-        $reindexResource->doReindexRequest();
-        $result = $api->getRequestResult($reindexResource);  
-      
-        $this->assertFalse($result->hasError());  
-    }
-    
     /*public function testGetReindexRequestTrue()
     {
         $config = new Config(self::$jiraRestHost);
@@ -174,5 +131,83 @@ class ReindexTest extends IntegrationBaseTest
         $response = $result->getResponse();
         $type = $response["type"];        
         $this->assertSame($type, "BACKGROUND");
+    }
+    
+    public function testDoReindexIssueTrue()
+    {
+        $config = new Config(self::$jiraRestHost);
+        $config->setSSLVerification(self::$isVerified);
+        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
+        
+        $api = new Api($config);
+        $reindexResource = new Reindex();
+
+        $reindexResource->doReindexIssue(self::$foreverIssueId);
+        $result = $api->getRequestResult($reindexResource);   
+        $response = $result->getResponse();
+        
+        if($result->hasError())
+        {
+            $this->assertTrue(!empty($response["currentSubTask"]));
+            
+            //waiting for finishing reindexing
+            sleep(10);
+        }
+        else
+        {
+            $this->assertFalse($result->hasError()); 
+        }
+    }
+    
+    public function testDoReindexIssueWithParametersTrue()
+    {
+        $config = new Config(self::$jiraRestHost);
+        $config->setSSLVerification(self::$isVerified);
+        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
+        
+        $api = new Api($config);
+        $reindexResource = new Reindex();
+
+        $reindexResource->doReindexIssue(self::$foreverIssueId, true, true, true);
+        $result = $api->getRequestResult($reindexResource); 
+        $response = $result->getResponse();
+        
+        if($result->hasError())
+        {
+            $this->assertTrue(!empty($response["currentSubTask"]));
+            
+            //waiting for finishing reindexing
+            sleep(10);
+        }
+        else
+        {
+            $this->assertFalse($result->hasError()); 
+        }
+    }
+    
+    public function testDoReindexRequestTrue()
+    {
+        $config = new Config(self::$jiraRestHost);
+        $config->setSSLVerification(self::$isVerified);
+        $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
+        
+        $api = new Api($config);
+        $reindexResource = new Reindex();
+
+        $reindexResource->doReindexRequest();
+        $result = $api->getRequestResult($reindexResource);        
+        $response = $result->getResponse();
+        
+        if($result->hasError())
+        {
+            $this->assertTrue(!empty($response["currentSubTask"]));
+            
+            //waiting for finishing reindexing
+            sleep(10);
+        }
+        else
+        {
+            $this->assertFalse($result->hasError()); 
+        }
     }
 }
