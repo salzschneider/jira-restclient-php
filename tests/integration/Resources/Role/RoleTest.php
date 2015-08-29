@@ -2,50 +2,50 @@
 use Mockery as m;
 use JiraRestlib\Api\Api;
 use JiraRestlib\Config\Config;
-use JiraRestlib\Resources\Resolution\Resolution;
+use JiraRestlib\Resources\Role\Role;
 use JiraRestlib\Tests\IntegrationBaseTest;
 
-class ResolutionTest extends IntegrationBaseTest
+class RoleTest extends IntegrationBaseTest
 {
     public function tearDown()
     {
         m::close();
     }   
    
-    public function testGetResolutionsTrue()
+    public function testGetRolesTrue()
     {
         $config = new Config(self::$jiraRestHost);
         $config->setSSLVerification(self::$isVerified);
         $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
         
         $api = new Api($config);
-        $resolutionResource = new Resolution();
+        $roleResource = new Role();
 
-        $resolutionResource->getResolutions();
-        $result = $api->getRequestResult($resolutionResource);  
+        $roleResource->getRoles();
+        $result = $api->getRequestResult($roleResource);        
         $this->assertFalse($result->hasError());      
     }  
     
-     public function testGetResolutionByIdTrue()
+    public function testGetRoleByIdTrue()
     {
         $config = new Config(self::$jiraRestHost);
         $config->setSSLVerification(self::$isVerified);
         $config->setJiraAuth(self::$jiraRestUsername, self::$jiraRestPassword);
         
         $api = new Api($config);
-        $resolutionResource = new Resolution();
+        $roleResource = new Role();
 
-        $resolutionResource->getResolutions();
-        $result = $api->getRequestResult($resolutionResource); 
+        $roleResource->getRoles();
+        $result = $api->getRequestResult($roleResource); 
         $response = $result->getResponse();
-        $resolutionId = $response[0]["id"];
+        $roleId = $response[0]["id"];
         
-        $resolutionResource->getResolutionById($resolutionId);
-        $result = $api->getRequestResult($resolutionResource);  
+        $roleResource->getRoleById($roleId);
+        $result = $api->getRequestResult($roleResource);  
         $this->assertFalse($result->hasError());    
         
         $response = $result->getResponse();
-        $resolutionIdResult = $response["id"];        
-        $this->assertSame($resolutionIdResult, $resolutionId);
-    } 
+        $roleIdResult = $response["id"];        
+        $this->assertSame($roleIdResult, $roleId);
+    }
 }

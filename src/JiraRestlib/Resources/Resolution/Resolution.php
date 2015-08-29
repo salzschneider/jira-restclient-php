@@ -9,7 +9,7 @@ class Resolution extends ResourcesAbstract
      * 
      * @return void
      */
-    public function getResolution()
+    public function getResolutions()
     {          
         $this->uri = "/rest/api/".$this->getApiVersion()."/resolution/";    
         $this->method = "GET";
